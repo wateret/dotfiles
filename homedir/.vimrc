@@ -26,6 +26,7 @@ autocmd Filetype c,cpp setlocal ts=2 sw=2 expandtab
 autocmd Filetype javascript setlocal ts=2 sw=2 expandtab
 autocmd Filetype html setlocal ts=2 sw=2 expandtab
 autocmd Filetype python setlocal ts=4 sw=4 expandtab
+autocmd Filetype cs setlocal ts=4 sw=4 expandtab
 
 " syntax highlight
 syntax on
@@ -33,6 +34,7 @@ autocmd BufRead,BufNewFile *.rs set filetype=rust
 autocmd BufRead,BufNewFile *.ll set filetype=llvm
 autocmd BufRead,BufNewFile *.coffee set filetype=coffee
 autocmd BufRead,BufNewFile *.as set filetype=actionscript
+autocmd BufRead,BufNewFile *.swift set filetype=swift
 
 " TEMPORARY SETTINGS
 "autocmd BufRead,BufNewFile *.tjs,*.ts set filetype=javascript
