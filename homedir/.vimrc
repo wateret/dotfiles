@@ -132,9 +132,12 @@ map ,z :bp!<CR>
 map ,w :bw<CR>
 
 " key mappings for tabs
-map <F7> :tabp<CR>
-map <F8> :tabn<CR>
-map <F9> :tabe .<CR>
+nnoremap th  :tabfirst<CR>
+nnoremap tj  :tabnext<CR>
+nnoremap tk  :tabprev<CR>
+nnoremap tl  :tablast<CR>
+nnoremap tt  :tabedit .<CR>
+nnoremap td  :tabclose<CR>
 
 " opposite of J command
 map <C-j> i<CR><Esc>
