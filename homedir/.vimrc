@@ -133,8 +133,8 @@ map ,w :bw<CR>
 
 " key mappings for tabs
 nnoremap th  :tabfirst<CR>
-nnoremap tj  :tabnext<CR>
-nnoremap tk  :tabprev<CR>
+nnoremap tj  :tabprev<CR>
+nnoremap tk  :tabnext<CR>
 nnoremap tl  :tablast<CR>
 nnoremap tt  :tabedit .<CR>
 nnoremap td  :tabclose<CR>
