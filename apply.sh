@@ -3,9 +3,11 @@
 
 UNAME=`uname`
 
-if [[ $UNAME == 'Darwin' ]]; then # OS 
+if [[ $UNAME == 'Darwin' ]]; then  # macOS
+	# install brew
+	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	INSTALL='brew install '
-elif [[ $UNAME == 'Linux' ]]; then # assuming Ubuntu
+elif [[ $UNAME == 'Linux' ]]; then # Linux (assuming Ubuntu)
 	INSTALL='sudo apt-get install '
 fi
 
