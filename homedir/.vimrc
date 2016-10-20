@@ -14,7 +14,8 @@ set ignorecase
 set smartcase
 set modeline
 
-set colorcolumn=81
+set colorcolumn=80
+highlight ColorColumn ctermbg=gray
 
 " mouse drag on
 set mouse=a
@@ -35,10 +36,6 @@ autocmd BufRead,BufNewFile *.ll set filetype=llvm
 autocmd BufRead,BufNewFile *.coffee set filetype=coffee
 autocmd BufRead,BufNewFile *.as set filetype=actionscript
 autocmd BufRead,BufNewFile *.swift set filetype=swift
-
-" TEMPORARY SETTINGS
-"autocmd BufRead,BufNewFile *.tjs,*.ts set filetype=javascript
-"autocmd BufRead,BufNewFile *.cxx,*.cxxx set filetype=cpp
 
 " remove trailing space
 autocmd BufWritePre *.cc,*.cpp,*.js :%s/\s\+$//e
@@ -142,3 +139,6 @@ nnoremap td  :tabclose<CR>
 " opposite of J command
 map <C-j> i<CR><Esc>
 
+
+set exrc
+set secure
