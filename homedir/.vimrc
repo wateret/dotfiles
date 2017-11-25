@@ -14,7 +14,7 @@ set ignorecase
 set smartcase
 set modeline
 
-set colorcolumn=80
+set colorcolumn=120
 highlight ColorColumn ctermbg=gray
 
 " mouse drag on
@@ -109,11 +109,11 @@ nmap ,csg :call Csg()<cr>
 " search selection
 vnoremap // y/<C-R>"<CR>
 
-" key mappings for folding
-map <F1> v]}zf
-map <F2> zo
+" key maps for folding
+map ,f v]}zf
+map ,F zo
 
-" key mappings for file buffers
+" key maps for file buffers
 map ,1 :b!1<CR>
 map ,2 :b!2<CR>
 map ,3 :b!3<CR>
@@ -128,17 +128,16 @@ map ,x :bn!<CR>
 map ,z :bp!<CR>
 map ,w :bw<CR>
 
-" key mappings for tabs
-nnoremap th  :tabfirst<CR>
-nnoremap tj  :tabnext<CR>
-nnoremap tk  :tabprev<CR>
-nnoremap tl  :tablast<CR>
-nnoremap tt  :tabedit .<CR>
-nnoremap td  :tabclose<CR>
+" key maps for tabs
+nnoremap <C-h> :tabfirst<CR>
+nnoremap <C-j> :tabnext<CR>
+nnoremap <C-k> :tabprev<CR>
+nnoremap <C-l> :tablast<CR>
+nnoremap <C-n> :tabedit .<CR>
+nnoremap <C-c> :tabclose<CR>
 
-" opposite of J command
-map <C-j> i<CR><Esc>
-
+" key map for opposite of J command
+map <C-J> i<CR><Esc>
 
 set exrc
 set secure
