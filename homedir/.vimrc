@@ -133,11 +133,11 @@ nnoremap <C-h> :tabfirst<CR>
 nnoremap <C-j> :tabnext<CR>
 nnoremap <C-k> :tabprev<CR>
 nnoremap <C-l> :tablast<CR>
-nnoremap <C-n> :tabedit .<CR>
+nnoremap <C-n> :tabedit %:p:h<CR>
 nnoremap <C-c> :tabclose<CR>
 
 " key map for opposite of J command
-map <C-J> i<CR><Esc>
+map ,j i<CR><Esc>
 
 set exrc
 set secure
