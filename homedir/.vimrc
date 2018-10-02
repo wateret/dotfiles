@@ -13,6 +13,7 @@ set hls is
 set ignorecase
 set smartcase
 set modeline
+set incsearch
 
 set colorcolumn=120
 highlight ColorColumn ctermbg=gray
@@ -24,10 +25,14 @@ set mouse=a
 autocmd Filetype haskell setlocal ts=2 sw=2 expandtab
 autocmd Filetype rust setlocal ts=4 sw=4 expandtab
 autocmd Filetype c,cpp setlocal ts=2 sw=2 expandtab
+autocmd Filetype S,asm setlocal ts=4 sw=4 expandtab
 autocmd Filetype javascript setlocal ts=2 sw=2 expandtab
 autocmd Filetype html setlocal ts=2 sw=2 expandtab
 autocmd Filetype python setlocal ts=4 sw=4 expandtab
 autocmd Filetype cs setlocal ts=4 sw=4 expandtab
+autocmd Filetype sh setlocal ts=4 sw=4 expandtab
+autocmd Filetype vim setlocal ts=4 sw=4 expandtab
+autocmd Filetype markdown setlocal ts=4 sw=4 expandtab
 
 " syntax highlight
 syntax on
@@ -38,7 +43,7 @@ autocmd BufRead,BufNewFile *.as set filetype=actionscript
 autocmd BufRead,BufNewFile *.swift set filetype=swift
 
 " remove trailing space
-autocmd BufWritePre *.cc,*.cpp,*.js :%s/\s\+$//e
+autocmd BufWritePre *.vim,*.h,*.c,*.cc,*.cpp,*.js :%s/\s\+$//e
 
 " cscope settings
 set csprg=/usr/bin/cscope
@@ -127,6 +132,7 @@ map ,0 :b!10<CR>
 map ,x :bn!<CR>
 map ,z :bp!<CR>
 map ,w :bw<CR>
+map ,c :bd<CR>
 
 " key maps for tabs
 nnoremap <C-h> :tabfirst<CR>
@@ -141,3 +147,18 @@ map ,j i<CR><Esc>
 
 set exrc
 set secure
+
+command! E Explore
+
+" vim-airline
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_theme='bubblegum'
+let g:airline_solarized_bg='dark'
+
+" ctrlp
+let g:ctrlp_max_files=0
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v\.(git|hg|svn)$',
+  \ 'file': '\v\.(exe|so|dll|o)$',
+  \ }
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
