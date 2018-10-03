@@ -14,6 +14,7 @@ set ignorecase
 set smartcase
 set modeline
 set incsearch
+set hidden
 
 set colorcolumn=120
 highlight ColorColumn ctermbg=gray
