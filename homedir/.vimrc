@@ -9,6 +9,7 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 set smarttab
+set expandtab
 set hls is
 set ignorecase
 set smartcase
@@ -16,11 +17,19 @@ set modeline
 set incsearch
 set hidden
 
-set colorcolumn=120
+"set colorcolumn=120
 highlight ColorColumn ctermbg=gray
 
 " mouse drag on
 set mouse=a
+
+" init pathogen
+execute pathogen#infect()
+
+" solarized color scheme
+syntax enable
+set background=dark
+colorscheme solarized
 
 " language specific settings
 autocmd Filetype haskell setlocal ts=2 sw=2 expandtab
@@ -42,6 +51,9 @@ autocmd BufRead,BufNewFile *.ll set filetype=llvm
 autocmd BufRead,BufNewFile *.coffee set filetype=coffee
 autocmd BufRead,BufNewFile *.as set filetype=actionscript
 autocmd BufRead,BufNewFile *.swift set filetype=swift
+autocmd BufRead,BufNewFile *.cpp set syntax=cpp11
+autocmd BufRead,BufNewFile *.inc set syntax=cpp
+autocmd BufRead,BufNewFile *.fbs set syntax=fbs
 
 " remove trailing space
 autocmd BufWritePre *.vim,*.h,*.c,*.cc,*.cpp,*.js :%s/\s\+$//e
@@ -50,7 +62,7 @@ autocmd BufWritePre *.vim,*.h,*.c,*.cc,*.cpp,*.js :%s/\s\+$//e
 set csprg=/usr/bin/cscope
 set nocsverb
 "if filereadable("./cscope.out")
-"	cs add ./cscope.out
+"  cs add ./cscope.out
 "endif
 set csverb
 set csto=0
@@ -61,54 +73,54 @@ set tags=tags;/
 
 " find cscope db up to the root
 function! LoadCscope()
-	let db = findfile("cscope.out", ".;")
-	if (!empty(db))
-		let path = strpart(db, 0, match(db, "/cscope.out$"))
-		set nocscopeverbose " suppress 'duplicate connection' error
-		exe "cs add " . db . " " . path
-		set cscopeverbose
-	endif
+  let db = findfile("cscope.out", ".;")
+  if (!empty(db))
+    let path = strpart(db, 0, match(db, "/cscope.out$"))
+    set nocscopeverbose " suppress 'duplicate connection' error
+    exe "cs add " . db . " " . path
+    set cscopeverbose
+  endif
 endfunc
 au BufEnter /* call LoadCscope()
 
 " cscope shortcuts
 func! Css()
-	let css = expand("<cword>")
-	new 
-	exe "cs find s ".css
-	if getline(1) == ""
-		exe "q!"
-	endif
+  let css = expand("<cword>")
+  new
+  exe "cs find s ".css
+  if getline(1) == ""
+    exe "q!"
+  endif
 endfunc
 nmap ,css :call Css()<cr>
 
 func! Csc()
-	let csc = expand("<cword>")
-	new
-	exe "cs find c ".csc
-	if getline(1) == ""
-		exe "q!"
-	endif
+  let csc = expand("<cword>")
+  new
+  exe "cs find c ".csc
+  if getline(1) == ""
+    exe "q!"
+  endif
 endfunc
 nmap ,csc :call Csc()<cr>
 
 func! Csd()
-	let csd = expand("<cword>")
-	new
-	exe "cs find d ".csd
-	if getline(1) == ""
-		exe "q!"
-	endif
+  let csd = expand("<cword>")
+  new
+  exe "cs find d ".csd
+  if getline(1) == ""
+    exe "q!"
+  endif
 endfunc
 nmap ,csd :call Csd()<cr>
 
 func! Csg()
-	let csg = expand("<cword>")
-	new
-	exe "cs find g ".csg
-	if getline(1) == ""
-		exe "q!"
-	endif
+  let csg = expand("<cword>")
+  new
+  exe "cs find g ".csg
+  if getline(1) == ""
+    exe "q!"
+  endif
 endfunc
 nmap ,csg :call Csg()<cr>
 
@@ -117,7 +129,7 @@ vnoremap // y/<C-R>"<CR>
 
 " key maps for folding
 map ,f v]}zf
-map ,F zo
+map ,u zo
 
 " key maps for file buffers
 map ,1 :b!1<CR>
@@ -135,11 +147,11 @@ map ,z :bp!<CR>
 map ,w :bw<CR>
 map ,c :bd<CR>
 
-" key maps for tabs
-nnoremap <C-h> :tabfirst<CR>
-nnoremap <C-j> :tabnext<CR>
-nnoremap <C-k> :tabprev<CR>
-nnoremap <C-l> :tablast<CR>
+" key maps for buffers
+nnoremap <C-h> :bfirst<CR>
+nnoremap <C-j> :bn<CR>
+nnoremap <C-k> :bp<CR>
+nnoremap <C-l> :blast<CR>
 nnoremap <C-n> :tabedit %:p:h<CR>
 nnoremap <C-c> :tabclose<CR>
 
@@ -155,6 +167,7 @@ command! E Explore
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_theme='bubblegum'
 let g:airline_solarized_bg='dark'
+let g:airline_powerline_fonts = 1
 
 " ctrlp
 let g:ctrlp_max_files=0
@@ -163,3 +176,6 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(exe|so|dll|o)$',
   \ }
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+
+" set buffer hidden
+set hidden
