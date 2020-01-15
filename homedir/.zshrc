@@ -1,12 +1,12 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/hanjoung/.oh-my-zsh
+export ZSH=~/.oh-my-zsh
 export TERM=xterm-256color
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="powerlevel9k/powerlevel9k"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
 DEFAULT_USER="hanjoung"
 
@@ -88,7 +88,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=cyan"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-alias mengde="cd ~/ws/gh/wateret/mengde"
 alias grep="ggrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn} --exclude={tags,cscope.out,cscope.files}"
 
 fg() {
