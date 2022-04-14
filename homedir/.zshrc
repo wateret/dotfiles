@@ -8,7 +8,7 @@ export TERM=xterm-256color
 # time that oh-my-zsh is loaded.
 ZSH_THEME="powerlevel10k/powerlevel10k"
 
-DEFAULT_USER="hanjoung"
+#DEFAULT_USER="hanjoung"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
