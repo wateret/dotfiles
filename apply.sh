@@ -4,6 +4,9 @@
 UNAME=`uname`
 
 if [[ $UNAME == 'Darwin' ]]; then  # macOS
+    defaults write -g ApplePressAndHoldEnabled -bool false
+    defaults write -g com.apple.mouse.scaling -1
+
     # install brew
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     INSTALL='brew install '
