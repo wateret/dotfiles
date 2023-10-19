@@ -27,6 +27,8 @@ BASHRC_MORE="source ~/.bashrc_more"
 
 grep "'${BASHRC_MORE}'" ${BASHRC_PATH}
 if [ $? -ne 0 ]; then
+    echo
+    echo
     echo "# additional settings for bashrc" >> ${BASHRC_PATH}
     echo "${BASHRC_MORE}" >> ${BASHRC_PATH}
 fi
@@ -34,8 +36,8 @@ fi
 
 ### Install fundamental programs
 
-$INSTALL vim git
-
+$INSTALL vim
+$INSTALL git
 
 ### Vim
 
