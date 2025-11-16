@@ -43,7 +43,7 @@ $INSTALL git
 
 echo "==== Setting up tmux"
 git clone --single-branch https://github.com/gpakosz/.tmux.git ~/.tmux
-ln -s -f ~/.tmux/.tmux.conf
+ln -s -f ~/.tmux/.tmux.conf ~
 #cp ~/.tmux/.tmux.conf.local ~ # This is later replaced with a file in homedir/ so skip this
 
 #### Vim
