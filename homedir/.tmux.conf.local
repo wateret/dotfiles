@@ -456,20 +456,20 @@ tmux_conf_uninstall_plugins_on_reload=true
 # -- MY CUSTOM SETTINGS --------------------------------------------------------
 
 # powerline-like separator
-tmux_conf_theme_left_separator_main='\uE0B0'
-tmux_conf_theme_left_separator_sub='\uE0B1'
-tmux_conf_theme_right_separator_main='\uE0B2'
-tmux_conf_theme_right_separator_sub='\uE0B3'
-
+#tmux_conf_theme_left_separator_main='\uE0B0'
+#tmux_conf_theme_left_separator_sub='\uE0B1'
+#tmux_conf_theme_right_separator_main='\uE0B2'
+#tmux_conf_theme_right_separator_sub='\uE0B3'
 
 unbind r
 bind r source-file ~/.tmux.conf
 
 set -g prefix C-s
+set -gu prefix2
 set -g mouse on
 set -g @clipboard 'osc52'
 set -g set-clipboard on
-set -g clipboard external
+#set -g clipboard external
 
 # act like vim
 setw -g mode-keys vi

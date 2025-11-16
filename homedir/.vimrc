@@ -76,72 +76,6 @@ autocmd BufRead,BufNewFile *.fbs set syntax=fbs
 " remove trailing space
 autocmd BufWritePre *.vim,*.h,*.c,*.cc,*.cpp,*.js :%s/\s\+$//e
 
-" cscope settings
-set csprg=/usr/bin/cscope
-set nocsverb
-"if filereadable("./cscope.out")
-"  cs add ./cscope.out
-"endif
-set csverb
-set csto=0
-set cst
-
-" find ctags db up to the root
-set tags=tags;/
-
-" find cscope db up to the root
-function! LoadCscope()
-  let db = findfile("cscope.out", ".;")
-  if (!empty(db))
-    let path = strpart(db, 0, match(db, "/cscope.out$"))
-    set nocscopeverbose " suppress 'duplicate connection' error
-    exe "cs add " . db . " " . path
-    set cscopeverbose
-  endif
-endfunc
-au BufEnter /* call LoadCscope()
-
-" cscope shortcuts
-func! Css()
-  let css = expand("<cword>")
-  new
-  exe "cs find s ".css
-  if getline(1) == ""
-    exe "q!"
-  endif
-endfunc
-nmap ,css :call Css()<cr>
-
-func! Csc()
-  let csc = expand("<cword>")
-  new
-  exe "cs find c ".csc
-  if getline(1) == ""
-    exe "q!"
-  endif
-endfunc
-nmap ,csc :call Csc()<cr>
-
-func! Csd()
-  let csd = expand("<cword>")
-  new
-  exe "cs find d ".csd
-  if getline(1) == ""
-    exe "q!"
-  endif
-endfunc
-nmap ,csd :call Csd()<cr>
-
-func! Csg()
-  let csg = expand("<cword>")
-  new
-  exe "cs find g ".csg
-  if getline(1) == ""
-    exe "q!"
-  endif
-endfunc
-nmap ,csg :call Csg()<cr>
-
 " search selection
 vnoremap // y/<C-R>"<CR>
 
@@ -178,6 +112,7 @@ map ,j i<CR><Esc>
 
 set exrc
 set secure
+set hidden
 
 command! E Explore
 
@@ -194,9 +129,6 @@ let g:ctrlp_custom_ignore = {
   \ 'file': '\v\.(exe|so|dll|o)$',
   \ }
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
-
-" set buffer hidden
-set hidden
 
 nmap <leader>c <Plug>OSCYankOperator
 nmap <leader>cc <leader>c_
