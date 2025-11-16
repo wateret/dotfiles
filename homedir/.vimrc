@@ -179,3 +179,11 @@ let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclu
 
 " set buffer hidden
 set hidden
+
+call plug#begin()
+Plug 'ojroques/vim-oscyank', {'branch': 'main'}
+call plug#end()
+
+nmap <leader>c <Plug>OSCYankOperator
+nmap <leader>cc <leader>c_
+vmap <leader>c <Plug>OSCYankVisual

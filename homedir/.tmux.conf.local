@@ -468,6 +468,8 @@ bind r source-file ~/.tmux.conf
 set -g prefix C-s
 set -g mouse on
 set -g @clipboard 'osc52'
+set -g set-clipboard on
+set -g clipboard external
 
 # act like vim
 setw -g mode-keys vi
