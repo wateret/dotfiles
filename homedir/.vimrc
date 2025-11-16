@@ -17,14 +17,32 @@ set modeline
 set incsearch
 set hidden
 
+" plugins
+
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
+call plug#begin()
+
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'altercation/vim-colors-solarized'
+Plug 'ojroques/vim-oscyank', {'branch': 'main'}
+
+call plug#end()
+
+let mapleader = " "
+
 "set colorcolumn=120
 highlight ColorColumn ctermbg=gray
 
 " mouse drag on
 set mouse=a
-
-" init pathogen
-execute pathogen#infect()
 
 " solarized color scheme
 syntax enable
@@ -180,10 +198,7 @@ let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclu
 " set buffer hidden
 set hidden
 
-call plug#begin()
-Plug 'ojroques/vim-oscyank', {'branch': 'main'}
-call plug#end()
-
 nmap <leader>c <Plug>OSCYankOperator
 nmap <leader>cc <leader>c_
 vmap <leader>c <Plug>OSCYankVisual
+
