@@ -8,7 +8,7 @@ if [[ $UNAME == 'Darwin' ]]; then  # macOS
     defaults write -g com.apple.mouse.scaling -1
 
     # install brew
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     INSTALL='brew install '
 elif [[ $UNAME == 'Linux' ]]; then # Linux (assuming Ubuntu)
     INSTALL='sudo apt-get install -y'
