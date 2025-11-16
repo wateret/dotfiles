@@ -41,12 +41,14 @@ $INSTALL git
 
 #### tmux
 
+echo "==== Setting up tmux"
 git clone --single-branch https://github.com/gpakosz/.tmux.git ~
 ln -s -f ~/.tmux/.tmux.conf
-cp ~/.tmux/.tmux.conf.local ~
+#cp ~/.tmux/.tmux.conf.local ~ # This is later replaced with a file in homedir/ so skip this
 
 ### Vim
 
+echo "==== Setting up vim"
 # install pathogen
 mkdir -p ~/.vim/autoload ~/.vim/bundle && \
     curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
@@ -61,6 +63,8 @@ git clone https://github.com/altercation/vim-colors-solarized.git ~/.vim/bundle/
 
 
 ### ZSH
+
+echo "==== Setting up vim"
 
 # install zsh
 $INSTALL zsh
