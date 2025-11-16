@@ -39,6 +39,12 @@ fi
 $INSTALL vim
 $INSTALL git
 
+#### tmux
+
+git clone --single-branch https://github.com/gpakosz/.tmux.git ~
+ln -s -f ~/.tmux/.tmux.conf
+cp ~/.tmux/.tmux.conf.local ~
+
 ### Vim
 
 # install pathogen
