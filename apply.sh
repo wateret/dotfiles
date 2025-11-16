@@ -48,20 +48,6 @@ ln -s -f ~/.tmux/.tmux.conf ~
 
 #### Vim
 
-echo "==== Setting up vim"
-# install pathogen
-mkdir -p ~/.vim/autoload ~/.vim/bundle && \
-    curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-
-# install plugins for pathogen
-git clone https://github.com/vim-airline/vim-airline ~/.vim/bundle/vim-airline
-git clone https://github.com/vim-airline/vim-airline-themes ~/.vim/bundle/vim-airline-themes
-git clone https://github.com/tpope/vim-fugitive.git ~/.vim/bundle/vim-fugitive
-git clone https://github.com/airblade/vim-gitgutter.git ~/.vim/bundle/vim-gitgutter
-git clone https://github.com/kien/ctrlp.vim.git ~/.vim/bundle/ctrlp.vim
-git clone https://github.com/altercation/vim-colors-solarized.git ~/.vim/bundle/vim-colors-solarized
-
-
 #### ZSH
 
 echo "==== Setting up vim"
