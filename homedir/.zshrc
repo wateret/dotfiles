@@ -97,3 +97,16 @@ fg() {
         builtin fg %"$@"
     fi
 }
+
+export PATH=$HOME/.local/bin:$PATH
+alias v='nvim'
+eval "$(zoxide init zsh)"
+
+HISTSIZE=100000
+SAVEHIST=10000000
+setopt INC_APPEND_HISTORY
+setopt SHARE_HISTORY
+
+FZF_CTRL_R_OPTS="--height 30% --preview 'echo {2..} | bat --color=always -pl sh' --preview-window 'wrap,down,5'"
+unset MAILCHECK
+

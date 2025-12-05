@@ -19,9 +19,29 @@ set hidden
 
 " plugins
 
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+" Auto-install vim-plug for both Vim and Neovim
+
+if has('nvim')
+  " Neovim uses XDG_DATA_HOME or ~/.local/share/nvim/site/autoload/plug.vim
+  let s:data = empty($XDG_DATA_HOME) ? expand("$HOME/.local/share") : $XDG_DATA_HOME
+  let s:plug_path = s:data . "/nvim/site/autoload/plug.vim"
+  let s:install_cmd = '!sh -c ''curl -fLo "' . s:plug_path . '" --create-dirs ' .
+        \ 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'''
+else
+  " Vim uses ~/.vim/autoload/plug.vim
+  let s:plug_path = expand('~/.vim/autoload/plug.vim')
+  let s:install_cmd = '!curl -fLo ' . shellescape(s:plug_path) .
+        \ ' --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+endif
+
+" Install plug.vim when missing
+if empty(glob(s:plug_path))
+  silent execute s:install_cmd
+
+  augroup plug_bootstrap
+    autocmd!
+    autocmd VimEnter * ++once PlugInstall --sync | source $MYVIMRC
+  augroup END
 endif
 
 call plug#begin()

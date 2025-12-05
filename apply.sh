@@ -38,6 +38,11 @@ fi
 
 $INSTALL vim
 $INSTALL git
+$INSTALL ripgrep
+
+#### zoxide
+
+curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh
 
 #### tmux
 
@@ -45,8 +50,6 @@ echo "==== Setting up tmux"
 git clone --single-branch https://github.com/gpakosz/.tmux.git ~/.tmux
 ln -s -f ~/.tmux/.tmux.conf ~
 #cp ~/.tmux/.tmux.conf.local ~ # This is later replaced with a file in homedir/ so skip this
-
-#### Vim
 
 #### ZSH
 
@@ -68,3 +71,5 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/the
 ### Copy files to home directory again (for .zshrc)
 
 rsync -av homedir/ ~/
+mkdir -p ~/.config/nvim
+cp ~/.vimrc ~/.config/nvim/init.vim
