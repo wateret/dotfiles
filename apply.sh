@@ -37,6 +37,7 @@ fi
 ### Install fundamental programs
 
 $INSTALL vim
+$INSTALL neovim
 $INSTALL git
 $INSTALL ripgrep
 
