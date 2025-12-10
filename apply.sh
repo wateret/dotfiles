@@ -72,5 +72,3 @@ git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/the
 ### Copy files to home directory again (for .zshrc)
 
 rsync -av homedir/ ~/
-mkdir -p ~/.config/nvim
-cp ~/.vimrc ~/.config/nvim/init.vim
