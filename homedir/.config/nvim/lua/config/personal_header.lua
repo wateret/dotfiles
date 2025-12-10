@@ -1,4 +1,4 @@
--- Settings before plugin loads
+-- Settings before plugins loaded
 
 -- leader key
 vim.g.mapleader = " "
@@ -11,7 +11,11 @@ vim.opt.cursorline = true
 vim.opt.termguicolors = true
 vim.opt.signcolumn = "yes"
 vim.opt.scrolloff = 8
+vim.opt.wrap = false
 vim.o.winbar = "%t %m"
+vim.opt.wrap = false
+vim.opt.linebreak = true
+vim.opt.breakindent = true
 
 -- Buffers
 vim.opt.hidden = true
