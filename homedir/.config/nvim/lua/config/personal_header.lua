@@ -43,7 +43,8 @@ vim.opt.timeoutlen = 400
 -- Keymaps
 vim.keymap.set("n", "<Tab>", ":bnext<CR>", { silent = true })
 vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", { silent = true })
-vim.keymap.set("n", "<leader>e", ":Neotree left reveal toggle<CR>", { silent = true })
+vim.keymap.set("n", "<leader>e", ":Neotree left reveal<CR>", { silent = true })
+vim.keymap.set("n", "<leader>E", ":Neotree close<CR>", { silent = true })
 vim.keymap.set("n", "<leader>w", function()
   vim.cmd("wincmd w")
 end, { silent = true })
