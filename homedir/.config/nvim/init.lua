@@ -1,8 +1,2 @@
-require("config.personal_header")
-
+-- bootstrap lazy.nvim, LazyVim and your plugins
 require("config.lazy")
-require("config.lualine_evil")
-require("config.nvim-osc52")
-require("config.nvim-treesitter")
-
-require("config.personal_footer")
