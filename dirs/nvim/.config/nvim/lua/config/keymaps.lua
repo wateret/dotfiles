@@ -2,8 +2,6 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
-vim.keymap.set("n", "<leader>oe", "<cmd>Neotree focus<cr>", { desc = "Focus Neo-tree" })
-
 -- osc52 Keymaps
 vim.keymap.set("n", "<leader>y", require("osc52").copy_operator, { expr = true })
 vim.keymap.set("n", "<leader>yy", "<leader>y_", { remap = true })
