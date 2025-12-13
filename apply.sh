@@ -44,7 +44,7 @@ curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh 
 #### tmux
 
 echo "==== Setting up tmux"
-git clone --single-branch https://github.com/gpakosz/.tmux.git ~/.tmux
+git clone --single-branch https://github.com/gpakosz/.tmux.git ~/.tmux # oh-my-tmux
 ln -s -f ~/.tmux/.tmux.conf ~
 #cp ~/.tmux/.tmux.conf.local ~ # This is later replaced with a file in homedir/ so skip this
 
