@@ -13,9 +13,8 @@ elif [[ $UNAME == 'Linux' ]]; then # Linux (assuming Ubuntu)
   INSTALL='sudo apt-get install -y'
 fi
 
-### Copy files to home directory
-
-rsync -av homedir/ ~/
+### Create symlinks for all dotfiles
+./stow.sh
 
 ### Changes in bashrc
 
@@ -64,6 +63,3 @@ ZSH_CUSTOM=${ZSH_CUSTOM:-~/.oh-my-zsh/custom}
 git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $ZSH_CUSTOM/plugins/zsh-syntax-highlighting
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
-
-### Create symlinks for all dotfiles
-./stow.sh
