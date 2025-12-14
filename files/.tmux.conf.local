@@ -294,8 +294,8 @@ tmux_conf_theme_status_left_bg="$tmux_conf_theme_colour_1"
 tmux_conf_theme_status_left_attr="bold"
 
 tmux_conf_theme_status_right="#{mouse} | #{hostname} | #{net_speed} | 󰍛 #{cpu_percentage} |  #{ram_percentage}"
-tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_7"
-tmux_conf_theme_status_right_bg="$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_1"
+tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_10,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_2,$tmux_conf_theme_colour_2"
+tmux_conf_theme_status_right_bg="$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_2,$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_7"
 tmux_conf_theme_status_right_attr="none,none,none,none,none"
 
 # pairing indicator
