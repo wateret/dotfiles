@@ -268,20 +268,20 @@ tmux_conf_theme_right_separator_sub="|"
 #     - #{uptime_s}
 #     - #{username}
 #     - #{username_ssh}
-tmux_conf_theme_status_left="#{prefix}❐ #S "
+tmux_conf_theme_status_left="#{?client_prefix,#[bg=$tmux_conf_theme_colour_5],#[bg=$tmux_conf_theme_colour_11]} #S #[default] "
 #tmux_conf_theme_status_left=" ❐ #S | ↑#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} | #{pretty_pane_current_path} "
-tmux_conf_theme_status_right="#{mouse} | #{username}#{root} | #{hostname} | #{net_speed} | 󰍛 #{cpu_percentage} |  #{ram_percentage}"
+tmux_conf_theme_status_right="#{mouse} | #{hostname} | #{net_speed} | 󰍛 #{cpu_percentage} |  #{ram_percentage}"
 
 # status left style
-tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_6,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_8"
-tmux_conf_theme_status_left_bg="$tmux_conf_theme_colour_9,$tmux_conf_theme_colour_10,$tmux_conf_theme_colour_11"
-tmux_conf_theme_status_left_attr="bold,none,none"
+tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_6"
+tmux_conf_theme_status_left_bg="$tmux_conf_theme_colour_9"
+tmux_conf_theme_status_left_attr="bold"
 
 # status right style
 # # status right style
-tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_12,$tmux_conf_theme_colour_13,$tmux_conf_theme_colour_14,$tmux_conf_theme_colour_5,$tmux_conf_theme_colour_3,$tmux_conf_theme_colour_3"
-tmux_conf_theme_status_right_bg="$tmux_conf_theme_colour_15,$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_17,$tmux_conf_theme_colour_15,$tmux_conf_theme_colour_15,$tmux_conf_theme_colour_15"
-tmux_conf_theme_status_right_attr="none,none,bold,none,none,none"
+tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_12,$tmux_conf_theme_colour_13,$tmux_conf_theme_colour_5,$tmux_conf_theme_colour_3,$tmux_conf_theme_colour_3"
+tmux_conf_theme_status_right_bg="$tmux_conf_theme_colour_15,$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_15,$tmux_conf_theme_colour_15,$tmux_conf_theme_colour_15"
+tmux_conf_theme_status_right_attr="none,none,none,none,none"
 
 # pairing indicator
 tmux_conf_theme_pairing="⚇"                 # U+2687
