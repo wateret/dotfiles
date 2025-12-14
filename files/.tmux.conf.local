@@ -448,8 +448,8 @@ tmux_conf_uninstall_plugins_on_reload=true
 # visit https://github.com/tmux-plugins for available plugins
 #set -g @plugin 'tmux-plugins/tmux-copycat'
 #set -g @plugin 'tmux-plugins/tmux-cpu'
-#set -g @plugin 'tmux-plugins/tmux-resurrect'
-#set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
 #set -g @continuum-restore 'on'
 
 
@@ -471,12 +471,15 @@ set -g @clipboard 'osc52'
 set -g set-clipboard on
 #set -g clipboard external
 
+#set -g @continuum-restore 'on'
+set -g @continuum-save-interval '15'
+
 # act like vim
-setw -g mode-keys vi
-bind-key h select-pane -L
-bind-key j select-pane -D
-bind-key k select-pane -U
-bind-key l select-pane -R
+#setw -g mode-keys vi
+#bind-key h select-pane -L
+#bind-key j select-pane -D
+#bind-key k select-pane -U
+#bind-key l select-pane -R
 
 # -- custom variables ----------------------------------------------------------
 
