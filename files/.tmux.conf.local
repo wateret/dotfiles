@@ -122,6 +122,25 @@ tmux_conf_theme_colour_17="#e4e4e4"   # white
 #tmux_conf_theme_colour_16="colour1"
 #tmux_conf_theme_colour_17="colour15"
 
+# Dracula-like palette
+tmux_conf_theme_colour_1="#282a36"    # background
+tmux_conf_theme_colour_2="#44475a"    # selection / darker gray
+tmux_conf_theme_colour_3="#6272a4"    # comment / muted blue
+tmux_conf_theme_colour_4="#8be9fd"    # cyan
+tmux_conf_theme_colour_5="#f1fa8c"    # yellow
+tmux_conf_theme_colour_6="#282a36"    # background (again)
+tmux_conf_theme_colour_7="#f8f8f2"    # foreground
+tmux_conf_theme_colour_8="#282a36"    # background (again)
+tmux_conf_theme_colour_9="#bd93f9"    # purple
+tmux_conf_theme_colour_10="#ff79c6"   # pink
+tmux_conf_theme_colour_11="#50fa7b"   # green
+tmux_conf_theme_colour_12="#44475a"   # gray
+tmux_conf_theme_colour_13="#f8f8f2"   # foreground
+tmux_conf_theme_colour_14="#282a36"   # background
+tmux_conf_theme_colour_15="#282a36"   # background
+tmux_conf_theme_colour_16="#ff5555"   # red
+tmux_conf_theme_colour_17="#f8f8f2"   # foreground
+
 # window style
 tmux_conf_theme_window_fg="default"
 tmux_conf_theme_window_bg="default"
@@ -268,19 +287,15 @@ tmux_conf_theme_right_separator_sub="|"
 #     - #{uptime_s}
 #     - #{username}
 #     - #{username_ssh}
-tmux_conf_theme_status_left="#{?client_prefix,#[bg=$tmux_conf_theme_colour_5],#[bg=$tmux_conf_theme_colour_11]} #S #[default] "
 #tmux_conf_theme_status_left=" ❐ #S | ↑#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} | #{pretty_pane_current_path} "
-tmux_conf_theme_status_right="#{mouse} | #{hostname} | #{net_speed} | 󰍛 #{cpu_percentage} |  #{ram_percentage}"
-
-# status left style
-tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_6"
-tmux_conf_theme_status_left_bg="$tmux_conf_theme_colour_9"
+tmux_conf_theme_status_left="#{?client_prefix,#[bg=$tmux_conf_theme_colour_5],#[bg=$tmux_conf_theme_colour_11]}  #S #[default] "
+tmux_conf_theme_status_left_fg="$tmux_conf_theme_colour_1"
+tmux_conf_theme_status_left_bg="$tmux_conf_theme_colour_1"
 tmux_conf_theme_status_left_attr="bold"
 
-# status right style
-# # status right style
-tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_12,$tmux_conf_theme_colour_13,$tmux_conf_theme_colour_5,$tmux_conf_theme_colour_3,$tmux_conf_theme_colour_3"
-tmux_conf_theme_status_right_bg="$tmux_conf_theme_colour_15,$tmux_conf_theme_colour_16,$tmux_conf_theme_colour_15,$tmux_conf_theme_colour_15,$tmux_conf_theme_colour_15"
+tmux_conf_theme_status_right="#{mouse} | #{hostname} | #{net_speed} | 󰍛 #{cpu_percentage} |  #{ram_percentage}"
+tmux_conf_theme_status_right_fg="$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_7,$tmux_conf_theme_colour_7"
+tmux_conf_theme_status_right_bg="$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_1,$tmux_conf_theme_colour_1"
 tmux_conf_theme_status_right_attr="none,none,none,none,none"
 
 # pairing indicator
