@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
+set -e
+
 # Single files
+echo "stow files ~/"
 stow -v -t $HOME files
 
-# Directories should be handled in this way
+# Directories
+echo "stow dir ~/.config"
 stow -v -t $HOME/.config -d dirs .config
