@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Single files
-stow -t $HOME -v files
+stow -v -t $HOME files
 
-# Directories should be added separately (Like, .config/???)
-stow -t $HOME -d dirs -v nvim
+# Directories should be handled in this way
+stow -v -t $HOME/.config -d dirs .config
