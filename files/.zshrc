@@ -106,9 +106,12 @@ fi
 
 
 HISTSIZE=100000
-SAVEHIST=10000000
-setopt INC_APPEND_HISTORY
+SAVEHIST=1000000
 setopt SHARE_HISTORY
+setopt INC_APPEND_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_SAVE_NO_DUPS
 
 FZF_CTRL_R_OPTS="--height 30% --preview 'echo {2..} | bat --color=always -pl sh' --preview-window 'wrap,down,5'"
 unset MAILCHECK

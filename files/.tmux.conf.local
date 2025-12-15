@@ -475,7 +475,7 @@ set -g @plugin 'tmux-plugins/tmux-mem'
 set -g @plugin 'tmux-plugins/tmux-net-speed'
 
 #set -g @continuum-restore 'on'
-set -g @continuum-save-interval '15'
+set -g @continuum-save-interval '300'
 set -g @net_speed_format "󰇚%10s | 󰕒%10s"
 
 # -- MY CUSTOM SETTINGS --------------------------------------------------------
