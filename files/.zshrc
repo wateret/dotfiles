@@ -88,16 +88,6 @@ ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=cyan"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-alias grep="ggrep --color=auto --exclude-dir={.bzr,CVS,.git,.hg,.svn} --exclude={tags,cscope.out,cscope.files}"
-
-fg() {
-    if [[ $# -eq 1 && $1 = - ]]; then
-        builtin fg %-
-    else
-        builtin fg %"$@"
-    fi
-}
-
 export PATH=$HOME/.local/bin:$PATH
 alias v='nvim'
 if command -v zoxide >/dev/null 2>&1; then
