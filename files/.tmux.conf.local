@@ -489,6 +489,8 @@ set -g @net_speed_format "󰇚%10s | 󰕒%10s"
 unbind r
 bind r source-file ~/.tmux.conf
 
+set-window-option -g mode-keys vi
+
 set -g prefix C-s
 set -gu prefix2
 set -g mouse on

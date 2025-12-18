@@ -63,6 +63,8 @@ source $ZSH/oh-my-zsh.sh
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=cyan"
 
+export EDITOR=nvim
+
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
@@ -94,7 +96,6 @@ if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init zsh)"
 fi
 
-
 HISTSIZE=100000
 SAVEHIST=1000000
 setopt SHARE_HISTORY
@@ -102,128 +103,19 @@ setopt INC_APPEND_HISTORY
 setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_SAVE_NO_DUPS
+unset MAILCHECK
 
 FZF_CTRL_R_OPTS="--height 30% --preview 'echo {2..} | bat --color=always -pl sh' --preview-window 'wrap,down,5'"
-unset MAILCHECK
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# Load additional settings
+ZSHRC_DIR="${0:A:h}"
 
-######## Custom keybindings
-
-# Delete from cursor to next separator (&&, ||, ;) including following spaces
-kill_to_next_sep() {
-  local buf="$BUFFER"
-  local cur=$CURSOR
-  local len=${#buf}
-
-  # If cursor is at or beyond end of line, nothing to do
-  (( cur >= len )) && return
-
-  # Part of buffer after the cursor (1-based indexing in zsh)
-  local after=${buf[cur+1,-1]}
-  local after_len=${#after}
-
-  local best_idx=-1    # position (1-based) of chosen separator within "after"
-  local sep_len=0      # length of chosen separator
-  local sep prefix pos
-
-  # 1) Find the closest separator among: &&, ||, ;
-  for sep in '&&' '||' ';'; do
-    if [[ $after == *"$sep"* ]]; then
-      prefix=${after%%"$sep"*}
-      pos=$(( ${#prefix} + 1 ))  # first char position of this sep in "after"
-      if (( best_idx == -1 || pos < best_idx )); then
-        best_idx=$pos
-        sep_len=${#sep}
-      fi
-    fi
-  done
-
-  # 2) If no separator found → delete to end of line (kill-line behavior)
-  if (( best_idx == -1 )); then
-    BUFFER="${buf[1,cur]}"
-    CURSOR=$cur
-    return
-  fi
-
-  # 3) Extend forward to include following spaces/tabs after the separator
-  local i=$(( best_idx + sep_len ))
-  local ch
-  while (( i <= after_len )); do
-    ch=${after[i]}
-    [[ $ch == ' ' || $ch == $'\t' ]] || break
-    (( i++ ))
-  done
-
-  # Delete from cursor to (cursor + i - 1) in the original buffer
-  local abs_end=$(( cur + i - 1 ))
-
-  # Keep: [1..cur] + [abs_end+1..end]
-  BUFFER="${buf[1,cur]}${buf[abs_end+1,-1]}"
-  CURSOR=$cur
-}
-
-# Delete from cursor backward to previous separator (&&, ||, ;) including leading spaces
-kill_to_prev_sep() {
-  local buf="$BUFFER"
-  local cur=$CURSOR
-
-  # If cursor is at start of line, nothing to do
-  (( cur <= 0 )) && return
-
-  # Part of buffer before the cursor (1-based indexing)
-  local pre=${buf[1,cur]}
-  local pre_len=${#pre}
-
-  local best_idx=-1    # position (1-based) of chosen separator within "pre"
-  local sep_len=0
-  local sep prefix pos
-
-  # 1) Find the closest separator to the left among: &&, ||, ;
-  for sep in '&&' '||' ';'; do
-    if [[ $pre == *"$sep"* ]]; then
-      # last occurrence position
-      prefix=${pre%$sep*}
-      pos=$(( ${#prefix} + 1 ))  # first char position of this sep in "pre"
-      if (( best_idx == -1 || pos > best_idx )); then
-        best_idx=$pos
-        sep_len=${#sep}
-      fi
-    fi
-  done
-
-  # 2) If no separator found → delete from line start to cursor (backward-kill-line)
-  if (( best_idx == -1 )); then
-    BUFFER="${buf[cur+1,-1]}"
-    CURSOR=0
-    return
-  fi
-
-  # 3) Extend backward to include leading spaces/tabs before the separator
-  local left=$best_idx
-  local ch
-  while (( left > 1 )); do
-    ch=${pre[left-1]}
-    [[ $ch == ' ' || $ch == $'\t' ]] || break
-    (( left-- ))
-  done
-
-  # Delete from "left" to "cur" (both inclusive) in the original buffer
-  local keep_end=$(( left - 1 ))
-  BUFFER="${buf[1,keep_end]}${buf[cur+1,-1]}"
-
-  # Cursor goes to end of kept prefix
-  CURSOR=$keep_end
-}
-
-zle -N kill_to_next_sep
-zle -N kill_to_prev_sep
-
-bindkey -r $'\eD' 2>/dev/null
-bindkey -r $'\e\x7f' 2>/dev/null
-bindkey $'\eD' kill_to_next_sep
-bindkey $'\e\x7f' kill_to_prev_sep
+for f in "$ZSHRC_DIR"/.zshrc.more.*(On); do
+  # print -P "%F{cyan}[zshrc]%f sourcing %F{yellow}$f%f"
+  source "$f"
+done
