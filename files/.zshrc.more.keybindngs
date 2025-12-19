@@ -132,7 +132,7 @@ fzf-insert-from-tmux-popup() {
   cmdfile="$tmpdir/cmd"
 
   # Popup #1: normal zsh startup (same prompt/history), Enter captures BUFFER and exits
-  tmux popup -E -w 90% -h 70% \
+  tmux popup -E -d "$PWD" -w 90% -h 70% \
     "TMUX_POPUP_CAPTURE_FILE='$cmdfile' zsh -i" >/dev/null 2>&1
 
   cmd="$(<"$cmdfile" 2>/dev/null)" || cmd=""
