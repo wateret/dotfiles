@@ -107,11 +107,11 @@ kill_to_prev_sep() {
 fzf-insert-from-tmux-popup() {
   local out
 
-  # Let tmux/fzf use the terminal cleanly
   zle -I
 
-  # 1) Run a popup that asks for a command, runs it, lets you pick with fzf,
-  #    then saves the selection into tmux buffer.
+  # Clear buffer first to avoid stale insert
+  tmux delete-buffer -b fzf_insert 2>/dev/null || true
+
   tmux popup -E -w 90% -h 70% 'zsh -i -c '"'"'
     print -rn -- "Cmd> "
     IFS= read -r cmd || exit 0
@@ -120,11 +120,12 @@ fzf-insert-from-tmux-popup() {
     sel="$(eval "$cmd" | fzf)" || exit 0
     [[ -n "$sel" ]] || exit 0
 
-    print -rn -- "$sel" | tmux load-buffer -
+    # Only write when we have a real selection
+    print -rn -- "$sel" | tmux load-buffer -b fzf_insert -
   '"'"''
 
-  # 2) Read from tmux buffer and insert into current prompt
-  out="$(tmux save-buffer - 2>/dev/null)" || { zle -R; return 0; }
+  # If nothing was selected, buffer will not exist (or is empty) -> insert nothing
+  out="$(tmux save-buffer -b fzf_insert - 2>/dev/null)" || { zle -R; return 0; }
   [[ -n "$out" ]] || { zle -R; return 0; }
 
   LBUFFER+="$out"
