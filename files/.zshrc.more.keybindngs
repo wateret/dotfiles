@@ -104,34 +104,6 @@ kill_to_prev_sep() {
   CURSOR=$keep_end
 }
 
-fzf-insert-from-tmux-popup() {
-  local out
-
-  zle -I
-
-  # Clear buffer first to avoid stale insert
-  tmux delete-buffer -b fzf_insert 2>/dev/null || true
-
-  tmux popup -E -w 90% -h 70% 'zsh -i -c '"'"'
-    print -rn -- "Cmd> "
-    IFS= read -r cmd || exit 0
-    [[ -n "$cmd" ]] || exit 0
-
-    sel="$(eval "$cmd" | fzf)" || exit 0
-    [[ -n "$sel" ]] || exit 0
-
-    # Only write when we have a real selection
-    print -rn -- "$sel" | tmux load-buffer -b fzf_insert -
-  '"'"''
-
-  # If nothing was selected, buffer will not exist (or is empty) -> insert nothing
-  out="$(tmux save-buffer -b fzf_insert - 2>/dev/null)" || { zle -R; return 0; }
-  [[ -n "$out" ]] || { zle -R; return 0; }
-
-  LBUFFER+="$out"
-  zle -R
-}
-
 zle -N kill_to_next_sep
 zle -N kill_to_prev_sep
 
@@ -140,5 +112,48 @@ bindkey -r $'\e\x7f' 2>/dev/null
 bindkey $'\eD' kill_to_next_sep
 bindkey $'\e\x7f' kill_to_prev_sep
 
+# Capture command line and exit when running in tmux popup capture mode
+if [[ -n "${TMUX_POPUP_CAPTURE_FILE:-}" ]]; then
+  __tmux_popup_capture_and_exit() {
+    print -r -- "$BUFFER" >| "$TMUX_POPUP_CAPTURE_FILE"
+    zle -I
+    exit 0
+  }
+  zle -N accept-line __tmux_popup_capture_and_exit
+fi
+
+fzf-insert-from-tmux-popup() {
+  local out cmd tmpdir cmdfile
+
+  zle -I
+  tmux delete-buffer -b fzf_insert 2>/dev/null || true
+
+  tmpdir="$(mktemp -d -t tmux_popup_capture.XXXXXX)" || { zle reset-prompt; return 0; }
+  cmdfile="$tmpdir/cmd"
+
+  # Popup #1: normal zsh startup (same prompt/history), Enter captures BUFFER and exits
+  tmux popup -E -w 90% -h 70% \
+    "TMUX_POPUP_CAPTURE_FILE='$cmdfile' zsh -i" >/dev/null 2>&1
+
+  cmd="$(<"$cmdfile" 2>/dev/null)" || cmd=""
+  rm -rf -- "$tmpdir"
+
+  [[ -n "$cmd" ]] || { zle reset-prompt; return 0; }
+
+  # Popup #2: run cmd and fzf in popup; write selection to tmux buffer
+  tmux delete-buffer -b fzf_insert 2>/dev/null || true
+  tmux popup -E -w 90% -h 70% "zsh -i -c '
+    sel=\"\$(eval ${(qqq)cmd} | fzf)\" || exit 0
+    [[ -n \"\$sel\" ]] || exit 0
+    print -rn -- \"\$sel\" | tmux load-buffer -b fzf_insert -
+  '" >/dev/null 2>&1
+
+  out="$(tmux save-buffer -b fzf_insert - 2>/dev/null)" || { zle reset-prompt; return 0; }
+  [[ -n "$out" ]] || { zle reset-prompt; return 0; }
+
+  LBUFFER+="$out"
+  zle reset-prompt
+}
+
 zle -N fzf-insert-from-tmux-popup
-bindkey '^[g' fzf-insert-from-tmux-popup
+bindkey '^[f' fzf-insert-from-tmux-popup
