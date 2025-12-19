@@ -94,6 +94,7 @@ export PATH=$HOME/.local/bin:$PATH
 alias v='nvim'
 if command -v zoxide >/dev/null 2>&1; then
     eval "$(zoxide init zsh)"
+    alias cd='z'
 fi
 
 HISTSIZE=100000
