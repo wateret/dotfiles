@@ -105,7 +105,7 @@ setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_SAVE_NO_DUPS
 unset MAILCHECK
 
-FZF_CTRL_R_OPTS="--height 30% --preview 'echo {2..} | cat --color=always -pl sh' --preview-window 'wrap,down,5'"
+FZF_CTRL_R_OPTS="--height 33% --preview 'echo {2..}' --preview-window 'wrap,down,4' --wrap-sign ''"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
