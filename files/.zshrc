@@ -115,7 +115,7 @@ FZF_CTRL_R_OPTS="--height 30% --preview 'echo {2..} | cat --color=always -pl sh'
 # Load additional settings
 ZSHRC_DIR="${0:A:h}"
 
-for f in "$ZSHRC_DIR"/.zshrc.more.*(On); do
+for f in "$ZSHRC_DIR"/.zshrc.more.*(OnN); do
   # print -P "%F{cyan}[zshrc]%f sourcing %F{yellow}$f%f"
   source "$f"
 done
