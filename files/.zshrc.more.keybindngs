@@ -143,6 +143,9 @@ fzf-insert-from-tmux-popup() {
   # Popup #2: run cmd and fzf in popup; write selection to tmux buffer
   tmux delete-buffer -b fzf_insert 2>/dev/null || true
   tmux popup -E -w 90% -h 70% "zsh -i -c '
+    unalias fzf 2>/dev/null || true
+    unset FZF_TMUX FZF_TMUX_OPTS
+
     sel=\"\$(eval ${(qqq)cmd} | fzf)\" || exit 0
     [[ -n \"\$sel\" ]] || exit 0
     print -rn -- \"\$sel\" | tmux load-buffer -b fzf_insert -
@@ -156,4 +159,4 @@ fzf-insert-from-tmux-popup() {
 }
 
 zle -N fzf-insert-from-tmux-popup
-bindkey '^[f' fzf-insert-from-tmux-popup
+bindkey '^[g' fzf-insert-from-tmux-popup
