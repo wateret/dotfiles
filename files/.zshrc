@@ -91,11 +91,9 @@ export EDITOR=nvim
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export PATH=$HOME/.local/bin:$PATH
-alias v='nvim'
-if command -v zoxide >/dev/null 2>&1; then
-    eval "$(zoxide init zsh)"
-    alias cd='z'
-fi
+
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)" && alias cd=z
+command -v nvim >/dev/null 2>&1 && alias v=nvim vi=nvim
 
 HISTSIZE=100000
 SAVEHIST=1000000
