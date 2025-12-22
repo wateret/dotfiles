@@ -1,0 +1,48 @@
+{
+  "$schema": "https://lnav.org/schemas/format-v1.schema.json",
+  "sap_indexserver_trc": {
+    "title": "SAP HANA indexserver trace (.trc)",
+    "description": "SAP indexserver trace (thread/conn/tx + microsecond timestamp)",
+    "priority": 100,
+
+    "file-pattern": "(.*/)?indexserver_[^/]+\\.[0-9]{5}\\.[0-9]{3}\\.trc$",
+
+    "regex": {
+      "std": {
+        "pattern": "^\\[(?<thread_id>\\d+)\\]\\{(?<connection_id>-?\\d+)\\}\\[(?<transaction_id>-?\\d+)\\/(?<update_transaction_id>-?\\d+)\\](?:<>\\s*)?\\s+(?<timestamp>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{6})\\s+(?<level>[a-z])\\s+(?<module>.+?)\\s+(?<srcfile>[A-Za-z0-9_]+\\.[A-Za-z0-9_]+)\\((?<srcline>\\d+)\\)\\s*:\\s*(?<message>.*)$"
+      }
+    },
+
+    "timestamp-field": "timestamp",
+    "timestamp-format": [ "%Y-%m-%d %H:%M:%S.%f" ],
+
+    "level-field": "level",
+    "level": {
+      "error": "^e$",
+      "warning": "^w$",
+      "info": "^i$",
+      "debug": "^d$",
+      "trace": "^t$",
+      "fatal": "^f$"
+    },
+
+    "value": {
+      "thread_id": { "kind": "integer", "identifier": true },
+      "connection_id": { "kind": "integer" },
+      "transaction_id": { "kind": "integer" },
+      "update_transaction_id": { "kind": "integer" },
+      "srcline": { "kind": "integer" },
+      "module": { "kind": "string", "identifier": true },
+      "srcfile": { "kind": "string", "identifier": true }
+    },
+
+    "sample": [
+      {
+        "line": "[115720]{-1}[-1/-1]<> 2025-12-19 12:59:12.611715 i Savepoint        SavepointImpl.cpp(01854) : Savepoint current savepoint version: 253"
+      },
+      {
+        "line": "[63972]{200003}[12/17232137] 2013-03-17 13:00:19.288982 i Daemon TrexDaemon.cpp(10898) : * Version 1.00.35.365038 (opt) branch NewDB100_REL"
+      }
+    ]
+  }
+}
