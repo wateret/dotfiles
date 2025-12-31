@@ -6,7 +6,7 @@ export TERM=xterm-256color
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="powerlevel10k/powerlevel10k"
+#ZSH_THEME="powerlevel10k/powerlevel10k"
 
 #DEFAULT_USER="hanjoung"
 
@@ -93,6 +93,7 @@ export EDITOR=nvim
 export PATH=$HOME/.local/bin:$PATH
 
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)" && alias cd=z
+command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
 command -v nvim >/dev/null 2>&1 && alias v=nvim vi=nvim
 
 HISTSIZE=100000
@@ -107,7 +108,7 @@ unset MAILCHECK
 FZF_CTRL_R_OPTS="--height 33% --preview 'echo {2..}' --preview-window 'wrap,down,4' --wrap-sign ''"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+#[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
