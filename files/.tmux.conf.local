@@ -486,6 +486,9 @@ set -g @net_speed_format "󰇚%10s | 󰕒%10s"
 #tmux_conf_theme_right_separator_main='\uE0B2'
 #tmux_conf_theme_right_separator_sub='\uE0B3'
 
+bind C-i display-popup -w 80% -h 80% -d "#{pane_current_path}" -E ipython
+bind C-g display-popup -w 80% -h 80% -d "#{pane_current_path}" -E lazygit
+
 unbind r
 bind r source-file ~/.tmux.conf
 
