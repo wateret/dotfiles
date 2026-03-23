@@ -502,6 +502,8 @@ set -g set-clipboard on
 set -g pane-border-lines heavy
 #set -g clipboard external
 
+set -g @resurrect-save 'S'
+set -g @resurrect-restore 'S'
 
 # -- custom variables ----------------------------------------------------------
 
