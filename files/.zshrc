@@ -119,7 +119,4 @@ FZF_CTRL_R_OPTS="--height 33% --preview 'echo {2..}' --preview-window 'wrap,down
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Load additional settings
-for f in "$HOME"/.zshrc.more.*(OnN); do
-  # print -P "%F{cyan}[zshrc]%f sourcing %F{yellow}$f%f"
-  source "$f"
-done
+for f in ~/.config/zsh/zshrc.*.zsh; do source "$f"; done
