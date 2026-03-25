@@ -1,5 +1,5 @@
 # Claude Code powered command generator for zsh
-# Requires: claude(Claude Code CLI), tmux (optional, for terminal context)
+# Requires: claude(Claude Code CLI), tmux (optional, for terminal context), timeout (optional, from coreutils)
 #
 # Setup (add to .zshrc after sourcing this file):
 #   bindkey '^G' _clc_cmd_generate # Ctrl+G for example
@@ -78,12 +78,21 @@ Output rules:
   # ── call claude CLI ────────────────────────────────────────────────────────
   local result
   local start_time=$EPOCHREALTIME
-  result=$(echo "$prompt" | timeout ${CLC_CMD_TIMEOUT} claude -p "" --no-streaming 2>/dev/null)
+  local _timeout_cmd=""
+  if command -v timeout &>/dev/null; then
+    _timeout_cmd="timeout ${CLC_CMD_TIMEOUT}"
+  else
+    if [[ -n "$CLC_CMD_LOG_DIR" ]]; then
+      mkdir -p "$CLC_CMD_LOG_DIR" 2>/dev/null
+      echo "[warn] timeout not found; running without timeout limit" >> "${CLC_CMD_LOG_DIR}/clc-cmd-warn.log"
+    fi
+  fi
+  result=$(echo "$prompt" | ${_timeout_cmd} claude -p "" --no-streaming 2>/dev/null)
   local exit_code=$?
 
   # fallback: try passing prompt as argument if stdin mode failed
   if [[ $exit_code -ne 0 ]] || [[ -z "$result" ]]; then
-    result=$(timeout ${CLC_CMD_TIMEOUT} claude -p "$prompt" 2>/dev/null)
+    result=$(${_timeout_cmd} claude -p "$prompt" 2>/dev/null)
     exit_code=$?
   fi
   local elapsed=$(( EPOCHREALTIME - start_time ))

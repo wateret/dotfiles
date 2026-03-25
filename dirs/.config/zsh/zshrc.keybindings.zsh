@@ -182,5 +182,5 @@ bindkey '^[g' fzf-insert-from-tmux-popup
 bindkey '^U' backward-kill-line
 
 # Claude Code command generator
-source "${0:A:h}/clc-cmd.zsh"
+source ~/.config/zsh/clc-cmd.zsh
 bindkey '^[a' _clc_cmd_generate
