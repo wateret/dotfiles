@@ -1,3 +1,21 @@
+# git with delta (side-by-side when terminal is wide enough)
+_git_with_delta() {
+  local cmd=$1; shift
+  local w=${COLUMNS:-$(tput cols 2>/dev/null || echo 80)}
+  if command -v delta &>/dev/null; then
+    if (( w >= 200 )); then
+      git "$cmd" "$@" | delta --paging always -s
+    else
+      git "$cmd" "$@" | delta --paging always
+    fi
+  else
+    git "$cmd" "$@"
+  fi
+}
+gdd() { _git_with_delta diff "$@"; }
+gshd() { _git_with_delta show "$@"; }
+gstsd() { _git_with_delta stash show -p "$@"; }
+
 # Delete from cursor to next separator (&&, ||, ;) including following spaces
 kill_to_next_sep() {
   local buf="$BUFFER"
