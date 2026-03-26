@@ -13,6 +13,7 @@
 
 # ── core widget ───────────────────────────────────────────────────────────────
 _clc_cmd_generate() {
+  setopt LOCAL_OPTIONS NO_NOTIFY NO_MONITOR
   local user_input="$BUFFER"
   [[ -z "$user_input" ]] && return
 
@@ -76,25 +77,42 @@ Output rules:
   zle -R
 
   # ── call claude CLI ────────────────────────────────────────────────────────
-  local result
+  local result exit_code _claude_pid _cancelled=0
   local start_time=$EPOCHREALTIME
-  local _timeout_cmd=""
-  if command -v timeout &>/dev/null; then
-    _timeout_cmd="timeout ${CLC_CMD_TIMEOUT}"
-  else
-    if [[ -n "$CLC_CMD_LOG_DIR" ]]; then
-      mkdir -p "$CLC_CMD_LOG_DIR" 2>/dev/null
-      echo "[warn] timeout not found; running without timeout limit" >> "${CLC_CMD_LOG_DIR}/clc-cmd-warn.log"
-    fi
+  local _tmpfile="/tmp/clc_cmd_$$"
+  local _infile="/tmp/clc_cmd_in_$$"
+  echo "$prompt" > "$_infile"
+
+  claude -p "" --no-streaming < "$_infile" > "$_tmpfile" 2>/dev/null &
+  _claude_pid=$!
+  trap "_cancelled=1; kill $_claude_pid 2>/dev/null" INT
+  wait $_claude_pid
+  exit_code=$?
+  trap - INT
+  rm -f "$_infile"
+
+  if (( _cancelled )); then
+    rm -f "$_tmpfile"
+    BUFFER="$saved_buffer"; CURSOR=$saved_cursor; zle redisplay; return
   fi
-  result=$(echo "$prompt" | ${_timeout_cmd} claude -p "" --no-streaming 2>/dev/null)
-  local exit_code=$?
+  result=$(cat "$_tmpfile" 2>/dev/null); rm -f "$_tmpfile"
 
   # fallback: try passing prompt as argument if stdin mode failed
   if [[ $exit_code -ne 0 ]] || [[ -z "$result" ]]; then
-    result=$(${_timeout_cmd} claude -p "$prompt" 2>/dev/null)
+    claude -p "$prompt" > "$_tmpfile" 2>/dev/null &
+    _claude_pid=$!
+    trap "_cancelled=1; kill $_claude_pid 2>/dev/null" INT
+    wait $_claude_pid
     exit_code=$?
+    trap - INT
+
+    if (( _cancelled )); then
+      rm -f "$_tmpfile"
+      BUFFER="$saved_buffer"; CURSOR=$saved_cursor; zle redisplay; return
+    fi
+    result=$(cat "$_tmpfile" 2>/dev/null); rm -f "$_tmpfile"
   fi
+
   local elapsed=$(( EPOCHREALTIME - start_time ))
 
   # ── log elapsed time ─────────────────────────────────────────────────────
