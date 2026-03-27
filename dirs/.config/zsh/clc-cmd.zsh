@@ -1,5 +1,8 @@
 # Claude Code powered command generator for zsh
-# Requires: claude(Claude Code CLI), tmux (optional, for terminal context), timeout (optional, from coreutils)
+# Requires:
+#   claude (Claude Code CLI)
+#   fzf (optional, for multi-candidate selection)
+#   tmux (optional, for terminal context)
 #
 # Setup (add to .zshrc after sourcing this file):
 #   bindkey '^G' _clc_cmd_generate # Ctrl+G for example
@@ -7,7 +10,6 @@
 # ── config ────────────────────────────────────────────────────────────────────
 : ${CLC_CMD_CONTEXT_LINES:=50}  # how many tmux scrollback lines to send
 : ${CLC_CMD_HISTORY_LINES:=50}   # how many recent history entries to send
-: ${CLC_CMD_TIMEOUT:=15}         # seconds before giving up
 : ${CLC_CMD_LOG_DIR:=""}         # log directory (empty = no logging)
 : ${CLC_CMD_CANDIDATES:=5}      # max candidates when multiple requested
 : ${CLC_CMD_SPINNER:=braille}   # spinner style: braille, ascii
@@ -26,8 +28,7 @@ _clc_cmd_generate() {
   # tmux scrollback (strip ANSI escape codes)
   if [[ -n "$TMUX" ]]; then
     context=$(tmux capture-pane -p -S -${CLC_CMD_CONTEXT_LINES} 2>/dev/null \
-      | sed 's/\x1b\[[0-9;]*[a-zA-Z]//g' \
-      | sed '/^[[:space:]]*$/d' \
+      | sed -e 's/\x1b\[[0-9;]*[a-zA-Z]//g' -e '/^[[:space:]]*$/d' \
       | tail -n ${CLC_CMD_CONTEXT_LINES} \
       | tail -c $(( CLC_CMD_CONTEXT_LINES * 200 )))
   fi
@@ -35,7 +36,7 @@ _clc_cmd_generate() {
   # current directory + git branch if available
   local cwd="$PWD"
   local git_info=""
-  if git rev-parse --is-inside-work-tree &>/dev/null 2>&1; then
+  if git rev-parse --is-inside-work-tree &>/dev/null; then
     local branch=$(git branch --show-current 2>/dev/null)
     local gst=$(git status --short 2>/dev/null | head -5)
     git_info="git branch: ${branch}${gst:+\ngit status (short):\n${gst}}"
@@ -111,9 +112,9 @@ Output rules:
     local _pstart=${#BUFFER}
     local _pend=$(( _pstart + ${#POSTDISPLAY} ))
     case "$CLC_CMD_SPINNER_COLOR" in
-      animated) region_highlight+=("${_pstart} ${_pend} fg=${_anim_colors[$(( _spin_i % _nc + 1 ))]}") ;;
-      plain)    region_highlight+=("${_pstart} ${_pend} fg=default") ;;
-      *)        region_highlight+=("${_pstart} ${_pend} fg=${CLC_CMD_SPINNER_COLOR}") ;;
+      animated) region_highlight=("${_pstart} ${_pend} fg=${_anim_colors[$(( _spin_i % _nc + 1 ))]}") ;;
+      plain)    region_highlight=("${_pstart} ${_pend} fg=default") ;;
+      *)        region_highlight=("${_pstart} ${_pend} fg=${CLC_CMD_SPINNER_COLOR}") ;;
     esac
     zle -R
     _spin_i=$(( _spin_i + 1 ))
@@ -130,7 +131,7 @@ Output rules:
     rm -f "$_tmpfile"
     BUFFER="$saved_buffer"; CURSOR=$saved_cursor; POSTDISPLAY=""; zle redisplay; return
   fi
-  result=$(cat "$_tmpfile" 2>/dev/null)
+  result=$(<"$_tmpfile")
   rm -f "$_tmpfile"
 
   local elapsed=$(( EPOCHREALTIME - start_time ))
@@ -144,17 +145,14 @@ Output rules:
   if [[ $exit_code -eq 0 ]] && [[ -n "$result" ]]; then
     # strip markdown code fences and blank lines
     result=$(echo "$result" \
-      | sed '/^```/d' \
-      | sed 's/^[[:space:]]*//' \
-      | sed 's/[[:space:]]*$//' \
-      | sed '/^$/d')
+      | sed -e '/^```/d' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' -e '/^$/d')
 
     local lines=$(echo "$result" | wc -l)
     local selected
-    if (( lines > 1 )); then
+    if (( lines > 1 )) && (( $+commands[fzf] )); then
       selected=$(echo "$result" | fzf --height=~${CLC_CMD_CANDIDATES} --reverse --no-sort --prompt="cmd> ")
     else
-      selected="$result"
+      selected=$(echo "$result" | head -1)
     fi
 
     if [[ -n "$selected" ]]; then
