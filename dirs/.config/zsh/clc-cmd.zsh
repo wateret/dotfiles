@@ -87,7 +87,7 @@ Output rules:
   local _infile="/tmp/clc_cmd_in_$$"
   printf '%s' "$_prompt" > "$_infile"
 
-  setsid claude -p < "$_infile" > "$_tmpfile" 2>/dev/null &
+  setsid claude -p --bare --no-session-persistence < "$_infile" > "$_tmpfile" 2>/dev/null &
   local _pid=$!
   trap "_cancelled=1; kill $_pid 2>/dev/null; wait $_pid 2>/dev/null" INT
 
