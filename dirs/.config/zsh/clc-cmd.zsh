@@ -10,6 +10,9 @@
 : ${CLC_CMD_TIMEOUT:=15}         # seconds before giving up
 : ${CLC_CMD_LOG_DIR:=""}         # log directory (empty = no logging)
 : ${CLC_CMD_CANDIDATES:=5}      # max candidates when multiple requested
+: ${CLC_CMD_SPINNER:=braille}   # spinner style: braille, ascii
+: ${CLC_CMD_VERBOSE:=0}        # 1 = show elapsed time and cancel hint
+: ${CLC_CMD_SPINNER_COLOR:=animated} # spinner color: animated, plain, or a color name/number
 
 # ── core widget ───────────────────────────────────────────────────────────────
 _clc_cmd_generate() {
@@ -25,7 +28,8 @@ _clc_cmd_generate() {
     context=$(tmux capture-pane -p -S -${CLC_CMD_CONTEXT_LINES} 2>/dev/null \
       | sed 's/\x1b\[[0-9;]*[a-zA-Z]//g' \
       | sed '/^[[:space:]]*$/d' \
-      | tail -n ${CLC_CMD_CONTEXT_LINES})
+      | tail -n ${CLC_CMD_CONTEXT_LINES} \
+      | tail -c $(( CLC_CMD_CONTEXT_LINES * 200 )))
   fi
 
   # current directory + git branch if available
@@ -38,11 +42,13 @@ _clc_cmd_generate() {
   fi
 
   # recent history
-  local hist=$(fc -l -${CLC_CMD_HISTORY_LINES} 2>/dev/null | sed 's/^[[:space:]]*[0-9]*[[:space:]]*//')
+  local hist=$(fc -l -${CLC_CMD_HISTORY_LINES} 2>/dev/null \
+    | sed 's/^[[:space:]]*[0-9]*[[:space:]]*//' \
+    | tail -c $(( CLC_CMD_HISTORY_LINES * 200 )))
 
   # ── build prompt ───────────────────────────────────────────────────────────
-  local prompt
-  prompt="You are a shell command generator. Output ONLY the shell command — no explanation, no markdown fences, no comments.
+  local _prompt
+  _prompt="You are a shell command generator. Output ONLY the shell command — no explanation, no markdown fences, no comments. Respond as fast as possible with minimal tokens.
 
 Context:
 - Shell: zsh
@@ -59,59 +65,73 @@ User request: ${user_input}
 Output rules:
 - If the request is straightforward, output exactly 1 command.
 - If the user asks for alternatives or multiple options, output up to ${CLC_CMD_CANDIDATES} candidates, one per line, ordered by relevance (best match first).
+- If you cannot generate a valid command, output the user request as-is.
 - No numbering, no explanation, no markdown fences."
 
   # ── log prompt ────────────────────────────────────────────────────────────
   if [[ -n "$CLC_CMD_LOG_DIR" ]]; then
     mkdir -p "$CLC_CMD_LOG_DIR" 2>/dev/null
     local logfile="${CLC_CMD_LOG_DIR}/$(date +%Y%m%d_%H%M%S).log"
-    echo "$prompt" > "$logfile"
+    echo "$_prompt" > "$logfile"
   fi
 
   # ── show spinner while waiting ─────────────────────────────────────────────
-  # save current buffer, show "thinking..." indicator
   local saved_buffer="$BUFFER"
   local saved_cursor="$CURSOR"
-  BUFFER="⏳ asking claude...${user_input:+ \"$user_input\"}"
-  CURSOR=${#BUFFER}
-  zle -R
+  POSTDISPLAY=""
 
   # ── call claude CLI ────────────────────────────────────────────────────────
-  local result exit_code _claude_pid _cancelled=0
+  local result exit_code _cancelled=0
   local start_time=$EPOCHREALTIME
   local _tmpfile="/tmp/clc_cmd_$$"
   local _infile="/tmp/clc_cmd_in_$$"
-  echo "$prompt" > "$_infile"
+  printf '%s' "$_prompt" > "$_infile"
 
-  claude -p "" --no-streaming < "$_infile" > "$_tmpfile" 2>/dev/null &
-  _claude_pid=$!
-  trap "_cancelled=1; kill $_claude_pid 2>/dev/null" INT
-  wait $_claude_pid
+  setsid claude -p < "$_infile" > "$_tmpfile" 2>/dev/null &
+  local _pid=$!
+  trap "_cancelled=1; kill $_pid 2>/dev/null; wait $_pid 2>/dev/null" INT
+
+  # animate spinner while waiting
+  local _spin_chars
+  case "$CLC_CMD_SPINNER" in
+    braille) _spin_chars=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏') ;;
+    *)       _spin_chars=('/' '-' '\' '|') ;;
+  esac
+  local _n=${#_spin_chars[@]}
+  local _anim_colors=(39 38 44 43 49 48 84 83 119 118 154 153 189 188 183 182 177 176 171 170 135 134 99 98 63 62)
+  local _nc=${#_anim_colors[@]}
+  local _spin_i=0
+  while kill -0 $_pid 2>/dev/null; do
+    local _sc=${_spin_chars[$(( _spin_i % _n + 1 ))]}
+    local _msg="${_sc} Asking Claude"
+    if (( CLC_CMD_VERBOSE )); then
+      _msg+=" (^C to cancel) $(printf '%4.1f' $(( EPOCHREALTIME - start_time )))s"
+    fi
+    POSTDISPLAY=$'\n'"${_msg}"
+    local _pstart=${#BUFFER}
+    local _pend=$(( _pstart + ${#POSTDISPLAY} ))
+    case "$CLC_CMD_SPINNER_COLOR" in
+      animated) region_highlight+=("${_pstart} ${_pend} fg=${_anim_colors[$(( _spin_i % _nc + 1 ))]}") ;;
+      plain)    region_highlight+=("${_pstart} ${_pend} fg=default") ;;
+      *)        region_highlight+=("${_pstart} ${_pend} fg=${CLC_CMD_SPINNER_COLOR}") ;;
+    esac
+    zle -R
+    _spin_i=$(( _spin_i + 1 ))
+    sleep 0.1 &
+    wait $! 2>/dev/null
+  done
+
+  wait $_pid 2>/dev/null
   exit_code=$?
   trap - INT
   rm -f "$_infile"
 
   if (( _cancelled )); then
     rm -f "$_tmpfile"
-    BUFFER="$saved_buffer"; CURSOR=$saved_cursor; zle redisplay; return
+    BUFFER="$saved_buffer"; CURSOR=$saved_cursor; POSTDISPLAY=""; zle redisplay; return
   fi
-  result=$(cat "$_tmpfile" 2>/dev/null); rm -f "$_tmpfile"
-
-  # fallback: try passing prompt as argument if stdin mode failed
-  if [[ $exit_code -ne 0 ]] || [[ -z "$result" ]]; then
-    claude -p "$prompt" > "$_tmpfile" 2>/dev/null &
-    _claude_pid=$!
-    trap "_cancelled=1; kill $_claude_pid 2>/dev/null" INT
-    wait $_claude_pid
-    exit_code=$?
-    trap - INT
-
-    if (( _cancelled )); then
-      rm -f "$_tmpfile"
-      BUFFER="$saved_buffer"; CURSOR=$saved_cursor; zle redisplay; return
-    fi
-    result=$(cat "$_tmpfile" 2>/dev/null); rm -f "$_tmpfile"
-  fi
+  result=$(cat "$_tmpfile" 2>/dev/null)
+  rm -f "$_tmpfile"
 
   local elapsed=$(( EPOCHREALTIME - start_time ))
 
@@ -145,10 +165,8 @@ Output rules:
       CURSOR=$saved_cursor
     fi
   else
-    # restore original input on failure
     BUFFER="$saved_buffer"
     CURSOR=$saved_cursor
-    zle -M "clc-cmd: failed (exit ${exit_code})"
   fi
 
   POSTDISPLAY=""

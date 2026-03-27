@@ -505,6 +505,9 @@ set -g pane-border-lines heavy
 set -g @resurrect-save 'S'
 set -g @resurrect-restore 'R'
 
+set -g default-terminal "tmux-256color"
+set -as terminal-features ",xterm-256color:RGB"
+
 # -- custom variables ----------------------------------------------------------
 
 # to define a custom #{foo} variable, define a POSIX shell function between the
