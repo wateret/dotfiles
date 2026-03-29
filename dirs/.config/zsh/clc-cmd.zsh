@@ -49,7 +49,7 @@ _clc_cmd_generate() {
 
   # ── build prompt ───────────────────────────────────────────────────────────
   local _prompt
-  _prompt="You are a shell command generator. Output ONLY the shell command — no explanation, no markdown fences, no comments. Respond as fast as possible with minimal tokens.
+  _prompt="You are a shell command generator. Output ONLY the shell command — no explanation, no markdown fences, no single bacticks, no comments.
 
 Context:
 - Shell: zsh
