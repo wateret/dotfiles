@@ -181,6 +181,15 @@ bindkey '^[g' fzf-insert-from-tmux-popup
 
 bindkey '^U' backward-kill-line
 
+zsh_update_custom_plugins() {
+  for d in $ZSH_CUSTOM/plugins/*; do
+    if [ -d "$d/.git" ]; then
+      echo "Updating $d..."
+      git -C "$d" pull
+    fi
+  done
+}
+
 # CLC_CMD_SPINNER_COLOR=animated
 CLC_CMD_VERBOSE=0
 source ~/.config/zsh/clc-cmd.zsh
