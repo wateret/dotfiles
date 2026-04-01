@@ -189,8 +189,3 @@ zsh_update_custom_plugins() {
     fi
   done
 }
-
-# CLC_CMD_SPINNER_COLOR=animated
-CLC_CMD_VERBOSE=0
-source ~/.config/zsh/clc-cmd.zsh
-bindkey '^[a' _clc_cmd_generate
