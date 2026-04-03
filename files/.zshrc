@@ -105,8 +105,6 @@ command -v nvim >/dev/null 2>&1 && alias v=nvim vi=nvim
 HISTSIZE=100000
 SAVEHIST=1000000
 setopt SHARE_HISTORY
-setopt INC_APPEND_HISTORY
-setopt HIST_IGNORE_DUPS
 setopt HIST_IGNORE_ALL_DUPS
 setopt HIST_SAVE_NO_DUPS
 unset MAILCHECK
