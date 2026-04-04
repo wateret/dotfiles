@@ -11,6 +11,6 @@ done
 export PATH="/data/i565578/.bin:$PATH"
 export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
 
-source /data/i565578/.HappyMake/etc/hminit.sh
+[ -f ~/.HappyMake/etc/hminit.sh ] && source ~/.HappyMake/etc/hminit.sh
 export CLAUDE_CODE_NO_FLICKER=1
 alias clc="claude --model \"opus[1m]\""
