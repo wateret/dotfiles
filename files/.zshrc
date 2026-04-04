@@ -66,9 +66,11 @@ plugins=(git zsh-syntax-highlighting zsh-autosuggestions zsh-spelline)
 # export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
-source $ZSH/oh-my-zsh.sh
-
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=cyan"
+
+ZSH_SPELLINE_CMD="ollama run qwen2.5-coder"
+
+source $ZSH/oh-my-zsh.sh
 
 export EDITOR=nvim
 

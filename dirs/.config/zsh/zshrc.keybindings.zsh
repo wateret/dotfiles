@@ -177,7 +177,7 @@ fzf-insert-from-tmux-popup() {
 }
 
 zle -N fzf-insert-from-tmux-popup
-bindkey '^[g' fzf-insert-from-tmux-popup
+bindkey '^[o' fzf-insert-from-tmux-popup
 
 bindkey '^U' backward-kill-line
 
