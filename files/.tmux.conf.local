@@ -490,8 +490,7 @@ bind C-i display-popup -w 90% -h 90% -d "#{pane_current_path}" -E ipython
 bind C-g display-popup -w 90% -h 90% -d "#{pane_current_path}" -E lazygit
 
 bind r source-file ~/.tmux.conf
-bind b run-shell '~/.config/tmux/bell-window.sh'
-bind -n S-Enter send-keys Escape "[13;2u" # Shift+Enter fix
+bind b run-shell '~/.config/tmux/focus-bell-window.sh'
 
 set-window-option -g mode-keys vi
 
@@ -503,6 +502,8 @@ set -g @clipboard 'osc52'
 set -g set-clipboard on
 set -g pane-border-lines heavy
 #set -g clipboard external
+set -g extended-keys on
+set -as terminal-features 'xterm*:extkeys'
 
 set -g @resurrect-save 'S'
 set -g @resurrect-restore 'R'

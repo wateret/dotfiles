@@ -68,7 +68,7 @@ plugins=(git zsh-syntax-highlighting zsh-autosuggestions zsh-spelline)
 
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=cyan"
 
-ZSH_SPELLINE_CMD="ollama run qwen2.5-coder"
+ZSH_SPELLINE_CMD="claude -p --bare --no-session-persistence"
 
 source $ZSH/oh-my-zsh.sh
 
