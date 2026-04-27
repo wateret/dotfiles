@@ -493,7 +493,7 @@ bind C-i display-popup -w 90% -h 90% -d "#{pane_current_path}" -E ipython
 bind C-g display-popup -w 90% -h 90% -d "#{pane_current_path}" -E lazygit
 
 bind r source-file ~/.tmux.conf
-bind b run-shell '~/.config/tmux/focus-bell-window.sh'
+bind b run-shell '~/.config/tmux/select-bell-window.sh'
 
 set-window-option -g mode-keys vi
 
