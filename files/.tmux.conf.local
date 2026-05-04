@@ -470,12 +470,12 @@ tmux_conf_uninstall_plugins_on_reload=true
 #set -g @plugin 'tmux-plugins/tmux-cpu'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
 set -g @plugin 'tmux-plugins/tmux-continuum'
-set -g @plugin 'timvw/tmux-assistant-resurrect'
 set -g @plugin 'tmux-plugins/tmux-cpu'
 set -g @plugin 'tmux-plugins/tmux-mem'
+set -g @plugin 'wateret/tmux-resurrect-agents'
 
 set -g @continuum-restore 'on'
-set -g @continuum-save-interval '300'
+set -g @continuum-save-interval '60'
 set -g @continuum-status-on ''
 set -g @continuum-status-off ''
 
