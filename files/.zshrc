@@ -103,6 +103,7 @@ export PATH=$HOME/.local/bin:$PATH
 
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)" && alias cd=z
 command -v nvim >/dev/null 2>&1 && alias v=nvim vi=nvim
+command -v claude >/dev/null 2>&1 && alias c=claude
 
 HISTSIZE=100000
 SAVEHIST=1000000
