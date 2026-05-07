@@ -506,6 +506,8 @@ set -g mouse on
 set -g @clipboard 'osc52'
 set -g set-clipboard on
 set -g pane-border-lines heavy
+set -g pane-border-status top
+set -g pane-border-format " [#{pane_index}] #{pane_title} "
 #set -g clipboard external
 set -g extended-keys on
 set -as terminal-features 'xterm*:extkeys'
