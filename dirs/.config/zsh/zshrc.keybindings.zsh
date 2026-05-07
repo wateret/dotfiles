@@ -67,6 +67,7 @@ kill_to_next_sep() {
   # Keep: [1..cur] + [abs_end+1..end]
   BUFFER="${buf[1,cur]}${buf[abs_end+1,-1]}"
   CURSOR=$cur
+  zle reset-prompt
 }
 
 # Delete from cursor backward to previous separator (&&, ||, ;) including leading spaces
@@ -120,6 +121,7 @@ kill_to_prev_sep() {
 
   # Cursor goes to end of kept prefix
   CURSOR=$keep_end
+  zle reset-prompt
 }
 
 zle -N kill_to_next_sep
