@@ -511,12 +511,14 @@ set -g pane-border-format " [#{pane_index}] #{pane_title} "
 #set -g clipboard external
 set -g extended-keys on
 set -as terminal-features 'xterm*:extkeys'
+set -g allow-passthrough on
+
+set -g default-terminal "tmux-256color"
+set -as terminal-features ",xterm-256color:RGB:hyperlinks"
+set -as terminal-features ",xterm-ghostty:RGB:hyperlinks"
 
 set -g @resurrect-save 'S'
 set -g @resurrect-restore 'R'
-
-set -g default-terminal "tmux-256color"
-set -as terminal-features ",xterm-256color:RGB"
 
 # -- custom variables ----------------------------------------------------------
 
