@@ -18,5 +18,5 @@ export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
 
 [ -f ~/.HappyMake/etc/hminit.sh ] && source ~/.HappyMake/etc/hminit.sh
 
-export CLAUDE_CODE_NO_FLICKER=1
 alias c="claude --model \"opus[1m]\""
+ZSH_SPELLINE_CMD="claude -p --bare --no-session-persistence"
