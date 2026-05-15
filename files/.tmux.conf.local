@@ -220,7 +220,7 @@ tmux_conf_theme_window_status_bg="$tmux_conf_theme_colour_2"
 tmux_conf_theme_window_status_attr="none"
 #tmux_conf_theme_window_status_format="#I #W#{?#{||:#{window_bell_flag},#{window_zoomed_flag}}, ,}#{?window_bell_flag,!,}#{?window_zoomed_flag,Z,}"
 #tmux_conf_theme_window_status_format="#{circled_window_index} #W#{?#{||:#{window_bell_flag},#{window_zoomed_flag}}, ,}#{?window_bell_flag,!,}#{?window_zoomed_flag,Z,}"
-tmux_conf_theme_window_status_format="#[bold]#I#[nobold] #W#(~/.config/tmux/claude-icons.sh '#{session_name}:#{window_index}')#{?window_zoomed_flag, 󰍉,}#{?window_bell_flag, ,}"
+tmux_conf_theme_window_status_format="#[bold]#I#[nobold] #W#{?window_zoomed_flag, 󰍉,}#{?window_bell_flag, ,}#(~/.config/tmux/claude-icons.sh '#{session_name}:#{window_index}')"
 
 # window current status style
 #   - built-in variables are:
@@ -237,7 +237,7 @@ tmux_conf_theme_window_status_current_bg="$tmux_conf_theme_colour_4"
 tmux_conf_theme_window_status_current_attr="bold"
 #tmux_conf_theme_window_status_current_format="#I #W#{?#{||:#{window_bell_flag},#{window_zoomed_flag}}, ,}#{?window_bell_flag,!,}#{?window_zoomed_flag,Z,}"
 #tmux_conf_theme_window_status_current_format="#{circled_window_index} #W#{?#{||:#{window_bell_flag},#{window_zoomed_flag}}, ,}#{?window_bell_flag,!,}#{?window_zoomed_flag,Z,}"
-tmux_conf_theme_window_status_current_format="#[bold]#I#[nobold] #W#(~/.config/tmux/claude-icons.sh '#{session_name}:#{window_index}')#{?window_zoomed_flag, 󰍉,}#{?window_bell_flag, ,}"
+tmux_conf_theme_window_status_current_format="#[bold]#I#[nobold] #W#{?window_zoomed_flag, 󰍉,}#{?window_bell_flag, ,}#(~/.config/tmux/claude-icons.sh '#{session_name}:#{window_index}')"
 
 # window activity status style
 tmux_conf_theme_window_status_activity_fg="default"
@@ -508,7 +508,7 @@ set -g set-clipboard on
 set -g pane-border-lines heavy
 set -g pane-border-status top
 set -g pane-border-format " [#{pane_index}] #{pane_title} "
-#set -g clipboard external
+set -g xterm-keys on
 set -g extended-keys on
 set -as terminal-features 'xterm*:extkeys'
 set -g allow-passthrough on
@@ -519,6 +519,9 @@ set -as terminal-features ",xterm-ghostty:RGB:hyperlinks"
 
 set -g @resurrect-save 'S'
 set -g @resurrect-restore 'R'
+
+# Re-render delta on pane resize
+set-hook -g after-resize-pane "run-shell -b '$HOME/.config/tmux/delta-resize.sh #{pane_id}'"
 
 # -- custom variables ----------------------------------------------------------
 
