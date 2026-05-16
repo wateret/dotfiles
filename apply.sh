@@ -48,6 +48,14 @@ if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
   git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
 fi
 
+#### agent-tools
+
+echo "==== Setting up agent-tools"
+if [ ! -d "$HOME/ws/gh/wateret/agent-tools" ]; then
+  mkdir -p "$HOME/ws/gh/wateret"
+  git clone https://github.com/wateret/agent-tools "$HOME/ws/gh/wateret/agent-tools"
+fi
+
 #### ZSH
 
 echo "==== Setting up vim"
