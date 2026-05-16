@@ -20,7 +20,7 @@ COLOR_WAITING="#f1fa8c"
 needs_refresh=1
 if [ -f "$CACHE_FILE" ]; then
   now=$(date +%s)
-  mtime=$(stat -c %Y "$CACHE_FILE" 2>/dev/null || echo 0)
+  mtime=$(stat -f %m "$CACHE_FILE" 2>/dev/null || stat -c %Y "$CACHE_FILE" 2>/dev/null || echo 0)
   if [ $((now - mtime)) -lt "$CACHE_TTL" ]; then
     needs_refresh=0
   fi
@@ -57,7 +57,12 @@ if [ "$needs_refresh" -eq 1 ]; then
 
         # Extract status
         status = "idle"
-        if (match(content, /"status"[ \t]*:[ \t]*"([^"]*)"/, m)) status = m[1]
+        if (match(content, /"status"[ \t]*:[ \t]*"[^"]*"/)) {
+          s = substr(content, RSTART, RLENGTH)
+          gsub(/.*"status"[ \t]*:[ \t]*"/, "", s)
+          gsub(/"$/, "", s)
+          status = s
+        }
 
         # Walk up parent chain
         cur = pid
