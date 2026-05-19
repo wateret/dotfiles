@@ -15,6 +15,7 @@ SESSIONS_DIR="${HOME}/.claude/sessions"
 
 COLOR_BUSY="#ff79c6"
 COLOR_IDLE="#6272a4"
+COLOR_WAITING="#f1fa8c"
 
 needs_refresh=1
 if [ -f "$CACHE_FILE" ]; then
@@ -82,6 +83,8 @@ if [ -f "$CACHE_FILE" ]; then
     [ "$wt" != "$WINDOW_TARGET" ] && continue
     if [ "$status" = "busy" ]; then
       output="${output}#[fg=${COLOR_BUSY}]${ICON}"
+    elif [ "$status" = "waiting" ]; then
+      output="${output}#[fg=${COLOR_WAITING}]${ICON}"
     else
       output="${output}#[fg=${COLOR_IDLE}]${ICON}"
     fi
