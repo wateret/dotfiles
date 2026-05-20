@@ -101,7 +101,6 @@ export EDITOR=nvim
 
 export PATH=$HOME/.local/bin:$PATH
 
-command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)" && alias cd=z
 command -v nvim >/dev/null 2>&1 && alias v=nvim vi=nvim
 command -v claude >/dev/null 2>&1 && alias c=claude
 
@@ -121,3 +120,6 @@ FZF_CTRL_R_OPTS="--height 33% --preview 'echo {2..}' --preview-window 'wrap,down
 
 # Load additional settings
 for f in ~/.config/zsh/zshrc.*.zsh; do source "$f"; done
+
+# zoxide must be initialized last
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)" && alias cd=z
