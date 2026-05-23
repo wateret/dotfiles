@@ -43,10 +43,18 @@ curl -sSfL https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh 
 
 #### tmux
 
-echo "==== Setting up tmux"
-git clone --single-branch https://github.com/gpakosz/.tmux.git ~/.tmux # oh-my-tmux
-ln -s -f ~/.tmux/.tmux.conf ~
-#cp ~/.tmux/.tmux.conf.local ~ # This is later replaced with a file in homedir/ so skip this
+echo "==== Setting up tmux (TPM)"
+if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+  git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+fi
+
+#### agent-tools
+
+echo "==== Setting up agent-tools"
+if [ ! -d "$HOME/ws/gh/wateret/agent-tools" ]; then
+  mkdir -p "$HOME/ws/gh/wateret"
+  git clone https://github.com/wateret/agent-tools "$HOME/ws/gh/wateret/agent-tools"
+fi
 
 #### ZSH
 
