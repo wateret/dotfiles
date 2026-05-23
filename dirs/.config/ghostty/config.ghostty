@@ -12,4 +12,4 @@ macos-option-as-alt = true
 
 keybind = global:alt+`=toggle_quick_terminal
 
-auto-update = false
+auto-update = off
