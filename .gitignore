@@ -1,2 +1,3 @@
 **/nvim/lazy-lock.json
 dirs/.config/tmux/plugins/
+dirs/.config/karabiner/automatic_backups/

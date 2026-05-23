@@ -9,6 +9,9 @@ if [[ $UNAME == 'Darwin' ]]; then # macOS
   # install brew
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   INSTALL='brew install '
+
+  # install karabiner-elements
+  brew install --cask karabiner-elements
 elif [[ $UNAME == 'Linux' ]]; then # Linux (assuming Ubuntu)
   INSTALL='sudo apt-get install -y'
 fi
