@@ -35,7 +35,6 @@
     os_icon                 # os identifier
     dir                     # current directory
     vcs                     # git status
-    time                    # current time
     command_execution_time  # duration of the last command
     # =========================[ Line #2 ]=========================
     newline                 # \n
