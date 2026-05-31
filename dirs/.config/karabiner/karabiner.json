@@ -17,7 +17,7 @@
                         ]
                     },
                     {
-                        "description": "Option+F/B to word navigation, Option+D to delete word forward, Ctrl+W to delete word backward",
+                        "description": "Option+F/B to word navigation, Ctrl+W to delete word backward",
                         "manipulators": [
                             {
                                 "from": {
