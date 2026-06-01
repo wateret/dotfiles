@@ -7,14 +7,10 @@ dir="$1"
 duration_ms=500
 
 if [ "$(tmux display-message -p '#{window_zoomed_flag}')" = "1" ]; then
-  # Move to another pane while keeping the window zoomed.
-  tmux select-pane -Z "$dir"
-
+  # Move to another pane unzoommed
+  tmux select-pane "$dir"
   # Briefly reveal the full layout and pane indicators.
-  tmux resize-pane -Z
   tmux display-panes -d "$duration_ms"
-
-  # Restore zoom on the newly selected pane.
   tmux resize-pane -Z
 else
   # Normal pane movement outside zoom mode.
