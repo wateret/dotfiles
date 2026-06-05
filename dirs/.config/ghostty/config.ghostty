@@ -4,10 +4,12 @@ theme = Dracula
 
 font-family = JetBrainsMono Nerd Font Mono
 font-family = D2Coding
-font-size = 17
+font-size = 16
 
 shell-integration = zsh
 
 macos-option-as-alt = true
 
 keybind = global:alt+`=toggle_quick_terminal
+
+auto-update = false
