@@ -125,8 +125,4 @@ export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f
 for f in ~/.config/zsh/zshrc.*.zsh; do source "$f"; done
 
 # zoxide must be initialized last
-# Silence the "init last" warning in non-interactive shells (e.g. Claude Code's
-# Bash tool, which restores functions/aliases from a shell snapshot but does
-# not re-register chpwd_functions hooks, so __zoxide_doctor false-positives).
-[[ -n "$CLAUDECODE" || ! -o interactive ]] && export _ZO_DOCTOR=0
 command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)" && alias cd=z
