@@ -124,5 +124,5 @@ export FZF_DEFAULT_OPTS='--color=fg:#f8f8f2,bg:#282a36,hl:#bd93f9 --color=fg+:#f
 # Load additional settings
 for f in ~/.config/zsh/zshrc.*.zsh; do source "$f"; done
 
-# zoxide must be initialized last
-command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)" && alias cd=z
+# zoxide must be initialized last; only in interactive shells (skip Bash tool / scripts)
+[[ -o interactive ]] && command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)" && alias cd=z
