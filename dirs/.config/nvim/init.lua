@@ -86,7 +86,7 @@ P.S. You can delete this when you're done too. It's your config now! :)
 
 -- ============================================================
 -- SECTION 1: OPTIONS
--- Core Neovim settings, leaders, options, basic keymaps, basic autocmds
+-- Core Neovim settings, leaders, options
 -- ============================================================
 do
   -- Enable faster startup by caching compiled Lua modules
@@ -110,7 +110,7 @@ do
   vim.o.number = true
   -- You can also add relative line numbers, to help with jumping.
   --  Experiment for yourself to see if you like it!
-  vim.o.relativenumber = true
+  vim.o.relativenumber = true -- CUSTOM: enabled (upstream commented out)
 
   -- Enable mouse mode, can be useful for resizing splits for example!
   vim.o.mouse = 'a'
@@ -122,7 +122,8 @@ do
   --  Schedule the setting after `UiEnter` because it can increase startup-time.
   --  Remove this option if you want your OS clipboard to remain independent.
   --  See `:help 'clipboard'`
-  vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
+  -- CUSTOM: disabled OS clipboard sync (upstream enables 'unnamedplus')
+  -- vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
 
   -- Enable break indent
   vim.o.breakindent = true
@@ -174,8 +175,8 @@ do
 end
 
 -- ============================================================
--- SECTION 2: KEYMAPS
--- basic keymaps
+-- SECTION 2: KEYMAPS & AUTOCMDS
+-- basic keymaps, basic autocmds
 -- ============================================================
 do
   -- [[ Basic Keymaps ]]
@@ -234,9 +235,11 @@ do
   vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
   vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+  -- CUSTOM START: buffer navigation
   -- Buffer navigation (overrides the built-in H/L screen-top/bottom motions)
   vim.keymap.set('n', '<S-h>', '<cmd>bprevious<CR>', { desc = 'Previous buffer' })
   vim.keymap.set('n', '<S-l>', '<cmd>bnext<CR>', { desc = 'Next buffer' })
+  -- CUSTOM END
 
   -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
   -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
@@ -363,6 +366,7 @@ do
       topdelete = { text = '‾' }, ---@diagnostic disable-line: missing-fields
       changedelete = { text = '~' }, ---@diagnostic disable-line: missing-fields
     },
+    -- CUSTOM START: gitsigns hunk navigation keymaps
     on_attach = function(bufnr)
       local gitsigns = require 'gitsigns'
       local map = function(mode, keys, func, desc) vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = desc }) end
@@ -377,6 +381,7 @@ do
         gitsigns.nav_hunk 'prev'
       end, 'Previous Git [H]unk')
     end,
+    -- CUSTOM END
   }
 
   -- Useful plugin to show you pending keybinds.
@@ -467,19 +472,21 @@ do
   --  Check out: https://github.com/nvim-mini/mini.nvim
 end
 
+-- CUSTOM START: entire section 4B is a custom addition
 -- ============================================================
 -- SECTION 4B: CLIPBOARD (osc52 over SSH)
 -- Copies to the *local* machine's clipboard over SSH via OSC52 escape codes
 -- ============================================================
-do
-  vim.pack.add { gh 'ojroques/nvim-osc52' }
-
-  if not vim.g.vscode then
-    vim.keymap.set('n', '<leader>y', require('osc52').copy_operator, { expr = true, desc = '[Y]ank (OSC52)' })
-    vim.keymap.set('n', '<leader>yy', '<leader>y_', { remap = true, desc = '[Y]ank line (OSC52)' })
-    vim.keymap.set('v', '<leader>y', require('osc52').copy_visual, { desc = '[Y]ank selection (OSC52)' })
-  end
-end
+-- do
+--   vim.pack.add { gh 'ojroques/nvim-osc52' }
+--
+--   if not vim.g.vscode then
+--     vim.keymap.set('n', '<leader>y', require('osc52').copy_operator, { expr = true, desc = '[Y]ank (OSC52)' })
+--     vim.keymap.set('n', '<leader>yy', '<leader>y_', { remap = true, desc = '[Y]ank line (OSC52)' })
+--     vim.keymap.set('v', '<leader>y', require('osc52').copy_visual, { desc = '[Y]ank selection (OSC52)' })
+--   end
+-- end
+-- CUSTOM END
 
 -- ============================================================
 -- SECTION 5: SEARCH & NAVIGATION
@@ -719,6 +726,7 @@ do
     end,
   })
 
+  -- CUSTOM START: HANA clangd resolution (SAP-patched binary + build profile)
   --- Find the best compile_commands.json under a HANA build dir
   ---@param build_dir string
   ---@return string|nil profile_name
@@ -778,16 +786,19 @@ do
       end
     end
   end
+  -- CUSTOM END
 
   -- Enable the following language servers
   --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
   --  See `:help lsp-config` for information about keys and how to configure
   ---@type table<string, vim.lsp.Config>
   local servers = {
+    -- CUSTOM START: enabled servers (upstream ships all of these commented out)
     clangd = clangd_config,
     pyright = {},
     ts_ls = {},
     bashls = {},
+    -- CUSTOM END
 
     stylua = {}, -- Used to format Lua code
 
@@ -835,6 +846,7 @@ do
 
   -- Automatically install LSPs and related tools to stdpath for Neovim
   require('mason').setup {}
+  -- CUSTOM: upstream also calls `require('mason-lspconfig').setup { automatic_enable = false }` here; removed intentionally
 
   -- Ensure the servers and tools above are installed
   --
