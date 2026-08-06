@@ -19,5 +19,5 @@ export PATH=/home/linuxbrew/.linuxbrew/bin:$PATH
 [ -f ~/.HappyMake/etc/hminit.sh ] && source ~/.HappyMake/etc/hminit.sh
 
 alias glowp='glow -p -w $(( COLUMNS < 200 ? COLUMNS : 200 ))'
-alias c="claude --model \"opus[1m]\""
+alias c="claude --model \"sonnet\""
 ZSH_SPELLINE_CMD="claude -p --bare --no-session-persistence --model claude-opus-4-7"
