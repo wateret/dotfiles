@@ -13,3 +13,7 @@ macos-option-as-alt = true
 keybind = global:alt+`=toggle_quick_terminal
 
 auto-update = off
+
+clipboard-paste-protection = false
+clipboard-read = allow
+clipboard-write = allow
