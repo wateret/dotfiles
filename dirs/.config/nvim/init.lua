@@ -99,7 +99,7 @@ do
   vim.g.maplocalleader = ' '
 
   -- Set to true if you have a Nerd Font installed and selected in the terminal
-  vim.g.have_nerd_font = false
+  vim.g.have_nerd_font = true
 
   -- [[ Setting options ]]
   --  See `:help vim.o`
@@ -477,6 +477,21 @@ end
 -- SECTION 4B: CLIPBOARD (osc52 over SSH)
 -- Copies to the *local* machine's clipboard over SSH via OSC52 escape codes
 -- ============================================================
+-- Herdr exposes OSC 52 through its outer terminal client. Keep this scoped to
+-- Herdr so tmux can continue using its own clipboard provider.
+if vim.env.HERDR_ENV == '1' then
+  local osc52 = require 'vim.ui.clipboard.osc52'
+  vim.g.clipboard = {
+    name = 'OSC 52',
+    copy = {
+      ['+'] = osc52.copy '+',
+    },
+    paste = {
+      ['+'] = osc52.paste '+',
+    },
+  }
+end
+
 -- do
 --   vim.pack.add { gh 'ojroques/nvim-osc52' }
 --
