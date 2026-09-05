@@ -1,0 +1,152 @@
+onboarding = false
+# herdr configuration — migrated from tmux.conf
+# Source: ~/.config/tmux/tmux.conf
+
+[theme]
+name = "catppuccin"
+
+auto_switch = false
+[terminal]
+default_shell = "/bin/zsh"
+new_cwd = "follow"
+
+[keys]
+# tmux: set -g prefix C-s
+prefix = "ctrl+s"
+
+# reload_config (tmux: bind r source-file)
+reload_config = "prefix+shift+r"
+copy_mode = ["prefix+enter", "prefix+["]
+
+# tabs (tmux windows)
+# tmux: bind c new-window
+new_tab = "prefix+c"
+# tmux: bind -n M-H previous-window / M-L next-window
+previous_tab = "alt+shift+h"
+next_tab = "alt+shift+l"
+rename_tab = "prefix+shift+t"
+close_tab = "prefix+shift+x"
+
+# workspaces (rough analog of tmux sessions)
+# tmux: bind C-c new-session
+new_workspace = "prefix+shift+n"
+# tmux: bind C-f command-prompt find-session
+workspace_picker = "prefix+w"
+rename_workspace = "prefix+shift+w"
+close_workspace = "prefix+shift+d"
+switch_workspace = "prefix+shift+1..9"
+
+# panes — direct alt+hjkl navigation (tmux: bind -n M-h/j/k/l)
+focus_pane_left = "alt+h"
+focus_pane_down = "alt+j"
+focus_pane_up = "alt+k"
+focus_pane_right = "alt+l"
+cycle_pane_next = "prefix+tab"
+cycle_pane_previous = "prefix+shift+tab"
+
+# pane splits — tmux muscle memory: " = top/bottom, % = left/right.
+# herdr names splits by the divider geometry (opposite of tmux):
+# split_horizontal draws a horizontal divider (stacked top/bottom),
+# split_vertical draws a vertical divider (side by side).
+split_horizontal = "prefix+\""
+split_vertical = "prefix+%"
+close_pane = "prefix+x"
+zoom = "prefix+z"
+rename_pane = "prefix+shift+p"
+
+# pane resize (herdr uses a resize mode; enter with prefix+r)
+resize_mode = "prefix+r"
+
+# misc
+detach = "prefix+q"
+settings = "prefix+s"
+help = "prefix+?"
+edit_scrollback = "prefix+e"
+toggle_sidebar = "prefix+b"
+goto = "prefix+g"
+
+# ctrl+1..9 → focus agent row 1..9 in sidebar
+focus_agent = "ctrl+1..9"
+
+# tmux: bind C-i display-popup -E ipython
+[[keys.command]]
+key = "prefix+ctrl+i"
+type = "popup"
+command = "ipython"
+width = "90%"
+height = "90%"
+
+# tmux-claude-finder (herdr port): bind F display-popup -E finder-herdr.sh
+[[keys.command]]
+key = "prefix+shift+f"
+type = "popup"
+command = "/bin/zsh -lic '$HOME/.config/tmux/plugins/tmux-claude-finder/scripts/finder-herdr.sh'"
+width = "80%"
+height = "60%"
+
+# tmux: bind C-g display-popup -E lazygit
+[[keys.command]]
+key = "prefix+ctrl+g"
+type = "popup"
+command = "lazygit"
+width = "90%"
+height = "90%"
+
+[ui]
+# tmux: set -g mouse on
+mouse_capture = true
+copy_on_select = true
+# tmux pane-border-lines heavy + pane-border-status top
+pane_borders = true
+pane_gaps = true
+show_agent_labels_on_pane_borders = true
+confirm_close = true
+# dracula orange for accents (roughly matches active pane border)
+accent = "#ffb86c"
+
+agent_panel_sort = "spaces"
+tab_bar_position = "bottom"
+tab_bar_right = [
+  { type = "command", command = "~/.config/herdr/status.sh", interval_seconds = 10, timeout_seconds = 2 },
+]
+tab_bar_right_separator = " | "
+
+[ui.sidebar.agents]
+rows = [
+  ["state_icon", "workspace", "tab", "agent"],
+  ["terminal_title_stripped"],
+]
+
+[ui.sidebar.agents.rows_by_agent]
+claude = [
+  ["state_icon", "workspace", "tab", { token = "agent", fg = "#d97757", bold = true, dim = false }],
+  ["terminal_title_stripped"],
+]
+codex = [
+  ["state_icon", "workspace", "tab", { token = "agent", fg = "#ffffff", bold = true, dim = false }],
+  ["terminal_title_stripped"],
+]
+copilot = [
+  ["state_icon", "workspace", "tab", { token = "agent", fg = "#8b5cf6", bold = true, dim = false }],
+  ["terminal_title_stripped"],
+]
+
+[ui.toast]
+delivery = "herdr"
+
+[ui.toast.clipboard]
+enabled = true
+
+[session]
+# closest herdr equivalent to tmux-resurrect / tmux-continuum for agent panes
+resume_agents_on_restore = true
+
+[advanced]
+# tmux: set -g history-limit 100000 (lines) → herdr uses bytes; ~10x default
+scrollback_limit_bytes = 100000000
+
+[[keys.command]]
+key = "prefix+v"
+type = "plugin_action"
+command = "herdr.next-agent.jump"
+description = "next agent needing attention"
