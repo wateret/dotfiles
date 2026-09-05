@@ -380,6 +380,28 @@ do
         if vim.wo.diff then return vim.cmd.normal { '[c', bang = true } end
         gitsigns.nav_hunk 'prev'
       end, 'Previous Git [H]unk')
+
+      -- Review changes (e.g. made by an agent) using the index as the "approved" baseline:
+      -- stage = accept, reset = reject. Both are dot-repeatable; visual mode acts on selected lines only.
+      local range = function() return { vim.fn.line '.', vim.fn.line 'v' } end
+
+      map('n', '<leader>hs', gitsigns.stage_hunk, 'Git [S]tage hunk (accept)')
+      map('v', '<leader>hs', function() gitsigns.stage_hunk(range()) end, 'Git [S]tage lines (accept)')
+
+      map('n', '<leader>hr', gitsigns.reset_hunk, 'Git [R]eset hunk (reject)')
+      map('v', '<leader>hr', function() gitsigns.reset_hunk(range()) end, 'Git [R]eset lines (reject)')
+
+      map('n', '<leader>hS', gitsigns.stage_buffer, 'Git [S]tage buffer (accept file)')
+      map('n', '<leader>hR', gitsigns.reset_buffer, 'Git [R]eset buffer (reject file)')
+
+      map('n', '<leader>hp', gitsigns.preview_hunk, 'Git [P]review hunk')
+      map('n', '<leader>hi', gitsigns.preview_hunk_inline, 'Git preview hunk [I]nline')
+
+      map('n', '<leader>hd', gitsigns.diffthis, 'Git [D]iff file vs index (unreviewed)')
+      map('n', '<leader>hD', function() gitsigns.diffthis '~' end, 'Git [D]iff file vs HEAD~')
+
+      map('n', '<leader>hq', gitsigns.setqflist, 'Git buffer hunks to [Q]uickfix')
+      map('n', '<leader>hQ', function() gitsigns.setqflist 'all' end, 'Git repo hunks to [Q]uickfix')
     end,
     -- CUSTOM END
   }
@@ -577,6 +599,8 @@ do
   vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
   vim.keymap.set('n', '<leader>sc', builtin.commands, { desc = '[S]earch [C]ommands' })
   vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+  -- Changed files with a diff preview. <Tab> toggles staging (i.e. marks as reviewed).
+  vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus (changed files)' })
 
   -- Add Telescope-based LSP pickers when an LSP attaches to a buffer.
   -- If you later switch picker plugins, this is where to update these mappings.
