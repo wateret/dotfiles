@@ -3,7 +3,7 @@ onboarding = false
 # Source: ~/.config/tmux/tmux.conf
 
 [theme]
-name = "catppuccin"
+name = "dracula"
 
 auto_switch = false
 [terminal]
@@ -111,6 +111,7 @@ tab_bar_right = [
 ]
 tab_bar_right_separator = " | "
 
+status_indicators = "dots"
 [ui.sidebar.agents]
 rows = [
   ["state_icon", "workspace", "tab", "agent"],
