@@ -1,0 +1,7 @@
+# Ignore everything in this directory by default.
+*
+
+# Keep only the files maintained in this directory.
+!/.gitignore
+!/config.toml
+!/status.sh
