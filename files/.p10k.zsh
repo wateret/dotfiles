@@ -32,7 +32,6 @@
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
-    os_icon                 # os identifier
     dir                     # current directory
     vcs                     # git status
     command_execution_time  # duration of the last command
@@ -166,20 +165,18 @@
   fi
 
   # Separator between same-color segments on the left.
-  typeset -g POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR='\uE0B5'
+  typeset -g POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR=''
   # Separator between same-color segments on the right.
-  typeset -g POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR='\uE0B7'
+  typeset -g POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR=''
   # Separator between different-color segments on the left.
-  typeset -g POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR='\uE0B4'
+  typeset -g POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR=''
   # Separator between different-color segments on the right.
-  typeset -g POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR='\uE0B6'
-  # To remove a separator between two segments, add "_joined" to the second segment name.
-  # For example: POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(os_icon context_joined)
+  typeset -g POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR=''
 
   # The right end of left prompt.
-  typeset -g POWERLEVEL9K_LEFT_PROMPT_LAST_SEGMENT_END_SYMBOL='\uE0B4'
+  typeset -g POWERLEVEL9K_LEFT_PROMPT_LAST_SEGMENT_END_SYMBOL=''
   # The left end of right prompt.
-  typeset -g POWERLEVEL9K_RIGHT_PROMPT_FIRST_SEGMENT_START_SYMBOL='\uE0B6'
+  typeset -g POWERLEVEL9K_RIGHT_PROMPT_FIRST_SEGMENT_START_SYMBOL=''
   # The left end of left prompt.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL=''
   # The right end of right prompt.
@@ -189,8 +186,8 @@
 
   #################################[ os_icon: os identifier ]##################################
   # OS identifier color.
-  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=255
-  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=67
+  typeset -g POWERLEVEL9K_OS_ICON_FOREGROUND=250
+  typeset -g POWERLEVEL9K_OS_ICON_BACKGROUND=
   # Custom icon.
   # typeset -g POWERLEVEL9K_OS_ICON_CONTENT_EXPANSION='⭐'
 
@@ -219,19 +216,19 @@
 
   ##################################[ dir: current directory ]##################################
   # Current directory background color.
-  typeset -g POWERLEVEL9K_DIR_BACKGROUND=4
+  typeset -g POWERLEVEL9K_DIR_BACKGROUND=
   # Default current directory foreground color.
-  typeset -g POWERLEVEL9K_DIR_FOREGROUND=0
+  typeset -g POWERLEVEL9K_DIR_FOREGROUND=39
   # If directory is too long, shorten some of its segments to the shortest possible unique
   # prefix. The shortened directory can be tab-completed to the original.
   typeset -g POWERLEVEL9K_SHORTEN_STRATEGY=truncate_to_unique
   # Replace removed segment suffixes with this symbol.
   typeset -g POWERLEVEL9K_SHORTEN_DELIMITER=
   # Color of the shortened directory segments.
-  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=0
+  typeset -g POWERLEVEL9K_DIR_SHORTENED_FOREGROUND=244
   # Color of the anchor directory segments. Anchor segments are never shortened. The first
   # segment is always an anchor.
-  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=0
+  typeset -g POWERLEVEL9K_DIR_ANCHOR_FOREGROUND=39
   # Display anchor directory segments in bold.
   typeset -g POWERLEVEL9K_DIR_ANCHOR_BOLD=true
   # Don't shorten directories that contain any of these files. They are anchors.
@@ -353,19 +350,21 @@
   #
   # typeset -g POWERLEVEL9K_DIR_CLASSES=()
 
-  # Custom prefix.
-  # typeset -g POWERLEVEL9K_DIR_PREFIX='in '
+  typeset -g POWERLEVEL9K_DIR_VISUAL_IDENTIFIER_EXPANSION=
+  typeset -g POWERLEVEL9K_DIR_LEFT_LEFT_WHITESPACE=
+  typeset -g POWERLEVEL9K_DIR_LEFT_RIGHT_WHITESPACE=
 
   #####################################[ vcs: git status ]######################################
   # Version control background colors.
-  typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND=2
-  typeset -g POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=3
-  typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=2
-  typeset -g POWERLEVEL9K_VCS_CONFLICTED_BACKGROUND=3
-  typeset -g POWERLEVEL9K_VCS_LOADING_BACKGROUND=8
+  typeset -g POWERLEVEL9K_VCS_CLEAN_BACKGROUND=
+  typeset -g POWERLEVEL9K_VCS_MODIFIED_BACKGROUND=
+  typeset -g POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND=
+  typeset -g POWERLEVEL9K_VCS_CONFLICTED_BACKGROUND=
+  typeset -g POWERLEVEL9K_VCS_LOADING_BACKGROUND=
 
   # Branch icon. Set this parameter to '\UE0A0 ' for the popular Powerline branch icon.
-  typeset -g POWERLEVEL9K_VCS_BRANCH_ICON='\uF126 '
+  typeset -g POWERLEVEL9K_VCS_BRANCH_ICON=
+  typeset -g POWERLEVEL9K_VCS_GIT_REMOTE_ICONS=()
 
   # Untracked files icon. It's really a question mark, your font isn't broken.
   # Change the value of this parameter to show a different icon.
@@ -390,11 +389,22 @@
     fi
 
     # Styling for different parts of Git status.
-    local       meta='%7F' # white foreground
-    local      clean='%0F' # black foreground
-    local   modified='%0F' # black foreground
-    local  untracked='%0F' # black foreground
-    local conflicted='%1F' # red foreground
+    # Base color reflects working-tree state: yellow if dirty, green if clean
+    # (mirrors the old rainbow background: MODIFIED=yellow, CLEAN=green).
+    local meta='%250F'           # light grey
+    local commit_summary='%244F' # dim grey
+    local conflicted='%196F'     # red
+
+    # Base color follows p10k's own state priority: conflicted > modified > clean.
+    local base
+    if (( VCS_STATUS_NUM_CONFLICTED )); then
+      base='%196F' # red (conflicted)
+    elif (( VCS_STATUS_NUM_STAGED || VCS_STATUS_NUM_UNSTAGED )); then
+      base='%178F' # yellow (modified)
+    else
+      base='%76F'  # green (clean / untracked-only)
+    fi
+    local clean=$base modified=$base untracked=$base
 
     local res
 
@@ -460,17 +470,23 @@
     # +42 if have staged changes.
     (( VCS_STATUS_NUM_STAGED     )) && res+=" ${modified}+${VCS_STATUS_NUM_STAGED}"
     # !42 if have unstaged changes.
-    (( VCS_STATUS_NUM_UNSTAGED   )) && res+=" ${modified}!${VCS_STATUS_NUM_UNSTAGED}"
+    (( VCS_STATUS_NUM_UNSTAGED   )) && res+=" ${clean}!${VCS_STATUS_NUM_UNSTAGED}"
     # ?42 if have untracked files. It's really a question mark, your font isn't broken.
     # See POWERLEVEL9K_VCS_UNTRACKED_ICON above if you want to use a different icon.
     # Remove the next line if you don't want to see untracked files at all.
-    (( VCS_STATUS_NUM_UNTRACKED  )) && res+=" ${untracked}${(g::)POWERLEVEL9K_VCS_UNTRACKED_ICON}${VCS_STATUS_NUM_UNTRACKED}"
+    (( VCS_STATUS_NUM_UNTRACKED  )) && res+=" ${clean}${(g::)POWERLEVEL9K_VCS_UNTRACKED_ICON}${VCS_STATUS_NUM_UNTRACKED}"
     # "─" if the number of unstaged files is unknown. This can happen due to
     # POWERLEVEL9K_VCS_MAX_INDEX_SIZE_DIRTY (see below) being set to a non-negative number lower
     # than the number of files in the Git index, or due to bash.showDirtyState being set to false
     # in the repository config. The number of staged and untracked files may also be unknown
     # in this case.
     (( VCS_STATUS_HAS_UNSTAGED == -1 )) && res+=" ${modified}─"
+
+    if [[ -n $VCS_STATUS_COMMIT_SUMMARY ]]; then
+      local summary=${VCS_STATUS_COMMIT_SUMMARY}
+      (( $#summary > 52 )) && summary=${summary[1,51]}…
+      res+=" ${commit_summary}${summary//\%/%%}"
+    fi
 
     typeset -g my_git_format=$res
   }
@@ -550,8 +566,8 @@
 
   ###################[ command_execution_time: duration of the last command ]###################
   # Execution time color.
-  typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND=0
-  typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND=13
+  typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_FOREGROUND=211
+  typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_BACKGROUND=
   # Show duration of the last command if takes at least this many seconds.
   typeset -g POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=3
   # Show this many fractional digits. Zero means round to seconds.
