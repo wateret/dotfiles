@@ -72,6 +72,13 @@ ZSH_SPELLINE_CMD="ollama run qwen2.5-coder"
 
 source $ZSH/oh-my-zsh.sh
 
+shift-enter-newline() {
+  LBUFFER+=$'\n'
+  zle redisplay
+}
+zle -N shift-enter-newline
+bindkey $'\e[13;2u' shift-enter-newline
+
 export EDITOR=nvim
 
 # You may need to manually set your language environment
@@ -101,9 +108,6 @@ export EDITOR=nvim
 
 export PATH=$HOME/.local/bin:$PATH
 
-command -v nvim >/dev/null 2>&1 && alias v=nvim vi=nvim
-command -v claude >/dev/null 2>&1 && alias c=claude
-
 HISTSIZE=100000
 SAVEHIST=1000000
 setopt SHARE_HISTORY
@@ -130,3 +134,6 @@ for f in ~/.config/zsh/zshrc.*.zsh; do source "$f"; done
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+command -v nvim >/dev/null 2>&1 && alias v=nvim vi=nvim
+command -v claude >/dev/null 2>&1 && alias c=claude
